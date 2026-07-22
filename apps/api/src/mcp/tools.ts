@@ -666,6 +666,232 @@ export function registerMcpTools(
   );
 
   server.registerTool(
+    "delete_project",
+    {
+      description: "Delete a project by ID.",
+      inputSchema: z.object({ id: nonEmptyString }),
+    },
+    async (args) =>
+      run(() =>
+        client.json(`/api/project/${encodeURIComponent(args.id)}`, {
+          method: "DELETE",
+        }),
+      ),
+  );
+
+  server.registerTool(
+    "archive_project",
+    {
+      description: "Archive a project by ID.",
+      inputSchema: z.object({ id: nonEmptyString }),
+    },
+    async (args) =>
+      run(() =>
+        client.json(`/api/project/${encodeURIComponent(args.id)}/archive`, {
+          method: "PUT",
+        }),
+      ),
+  );
+
+  server.registerTool(
+    "unarchive_project",
+    {
+      description: "Unarchive a project by ID.",
+      inputSchema: z.object({ id: nonEmptyString }),
+    },
+    async (args) =>
+      run(() =>
+        client.json(`/api/project/${encodeURIComponent(args.id)}/unarchive`, {
+          method: "PUT",
+        }),
+      ),
+  );
+
+  server.registerTool(
+    "delete_task",
+    {
+      description: "Delete a task by ID.",
+      inputSchema: z.object({ taskId: nonEmptyString }),
+    },
+    async (args) =>
+      run(() =>
+        client.json(`/api/task/${encodeURIComponent(args.taskId)}`, {
+          method: "DELETE",
+        }),
+      ),
+  );
+
+  server.registerTool(
+    "bulk_update_tasks",
+    {
+      description:
+        "Perform a bulk operation across multiple tasks at once (status/priority/assignee/dueDate update, label add/remove, or delete).",
+      inputSchema: z.object({
+        taskIds: z.array(nonEmptyString).min(1),
+        operation: z.enum([
+          "updateStatus",
+          "updatePriority",
+          "updateAssignee",
+          "delete",
+          "addLabel",
+          "removeLabel",
+          "updateDueDate",
+        ]),
+        value: z.string().nullable().optional(),
+      }),
+    },
+    async (args) =>
+      run(() =>
+        client.json("/api/task/bulk", {
+          method: "PATCH",
+          body: JSON.stringify({
+            taskIds: args.taskIds,
+            operation: args.operation,
+            ...(args.value !== undefined ? { value: args.value } : {}),
+          }),
+        }),
+      ),
+  );
+
+  server.registerTool(
+    "list_task_time_entries",
+    {
+      description: "List all time entries logged against a task.",
+      inputSchema: z.object({ taskId: nonEmptyString }),
+    },
+    async (args) =>
+      run(() =>
+        client.json(`/api/time-entry/task/${encodeURIComponent(args.taskId)}`, {
+          method: "GET",
+        }),
+      ),
+  );
+
+  server.registerTool(
+    "get_time_entry",
+    {
+      description: "Get a single time entry by ID.",
+      inputSchema: z.object({ id: nonEmptyString }),
+    },
+    async (args) =>
+      run(() =>
+        client.json(`/api/time-entry/${encodeURIComponent(args.id)}`, {
+          method: "GET",
+        }),
+      ),
+  );
+
+  server.registerTool(
+    "create_time_entry",
+    {
+      description: "Log a time entry against a task.",
+      inputSchema: z.object({
+        taskId: nonEmptyString,
+        startTime: isoDateTimeSchema,
+        endTime: optionalIsoDateTimeSchema,
+        description: z.string().optional(),
+      }),
+    },
+    async (args) =>
+      run(() =>
+        client.json("/api/time-entry", {
+          method: "POST",
+          body: JSON.stringify({
+            taskId: args.taskId,
+            startTime: args.startTime,
+            ...(args.endTime !== undefined ? { endTime: args.endTime } : {}),
+            ...(args.description !== undefined
+              ? { description: args.description }
+              : {}),
+          }),
+        }),
+      ),
+  );
+
+  server.registerTool(
+    "update_time_entry",
+    {
+      description: "Update an existing time entry.",
+      inputSchema: z.object({
+        id: nonEmptyString,
+        startTime: isoDateTimeSchema,
+        endTime: optionalIsoDateTimeSchema,
+        description: z.string().optional(),
+      }),
+    },
+    async (args) =>
+      run(() =>
+        client.json(`/api/time-entry/${encodeURIComponent(args.id)}`, {
+          method: "PUT",
+          body: JSON.stringify({
+            startTime: args.startTime,
+            ...(args.endTime !== undefined ? { endTime: args.endTime } : {}),
+            ...(args.description !== undefined
+              ? { description: args.description }
+              : {}),
+          }),
+        }),
+      ),
+  );
+
+  server.registerTool(
+    "list_notifications",
+    {
+      description: "List notifications for the signed-in user.",
+      inputSchema: z.object({}),
+    },
+    async () => run(() => client.json("/api/notification", { method: "GET" })),
+  );
+
+  server.registerTool(
+    "mark_notification_read",
+    {
+      description: "Mark a specific notification as read.",
+      inputSchema: z.object({ id: nonEmptyString }),
+    },
+    async (args) =>
+      run(() =>
+        client.json(`/api/notification/${encodeURIComponent(args.id)}/read`, {
+          method: "PATCH",
+        }),
+      ),
+  );
+
+  server.registerTool(
+    "mark_all_notifications_read",
+    {
+      description: "Mark all notifications as read for the signed-in user.",
+      inputSchema: z.object({}),
+    },
+    async () =>
+      run(() => client.json("/api/notification/read-all", { method: "PATCH" })),
+  );
+
+  server.registerTool(
+    "clear_all_notifications",
+    {
+      description: "Clear (delete) all notifications for the signed-in user.",
+      inputSchema: z.object({}),
+    },
+    async () =>
+      run(() =>
+        client.json("/api/notification/clear-all", { method: "DELETE" }),
+      ),
+  );
+
+  server.registerTool(
+    "get_notification_preferences",
+    {
+      description: "Get notification preferences for the signed-in user.",
+      inputSchema: z.object({}),
+    },
+    async () =>
+      run(() =>
+        client.json("/api/notification-preferences", { method: "GET" }),
+      ),
+  );
+
+  server.registerTool(
     "delete_label",
     {
       description:
