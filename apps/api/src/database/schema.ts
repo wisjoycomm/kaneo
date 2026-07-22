@@ -248,6 +248,10 @@ export const projectTable = pgTable(
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
     isPublic: boolean("is_public").default(false),
     archivedAt: timestamp("archived_at", { mode: "date" }),
+    // Map of column slug -> allowed next column slugs. Null = no restriction.
+    // Enforced in the UI only (drag targets / status picker); the API stays
+    // permissive so integrations and AI agents are never blocked.
+    columnTransitions: jsonb("column_transitions"),
   },
   (table) => [
     unique("project_workspace_id_id_unique").on(table.workspaceId, table.id),
@@ -313,6 +317,34 @@ export const workflowRuleTable = pgTable(
   ],
 );
 
+export const sprintTable = pgTable(
+  "sprint",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    projectId: text("project_id")
+      .notNull()
+      .references(() => projectTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    name: text("name").notNull(),
+    goal: text("goal"),
+    duration: text("duration").notNull().default("custom"),
+    status: text("status").notNull().default("planned"),
+    startDate: timestamp("start_date", { mode: "date" }),
+    endDate: timestamp("end_date", { mode: "date" }),
+    deletedAt: timestamp("deleted_at", { mode: "date" }),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [index("sprint_projectId_idx").on(table.projectId)],
+);
+
 export const taskTable = pgTable(
   "task",
   {
@@ -339,6 +371,12 @@ export const taskTable = pgTable(
       onUpdate: "cascade",
     }),
     priority: text("priority").default("low"),
+    type: text("type").notNull().default("task"),
+    parentTaskId: text("parent_task_id"),
+    sprintId: text("sprint_id").references(() => sprintTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
     startDate: timestamp("start_date", { mode: "date" }),
     dueDate: timestamp("due_date", { mode: "date" }),
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
@@ -352,7 +390,16 @@ export const taskTable = pgTable(
     index("task_dueDate_idx").on(table.dueDate),
     index("task_assigneeId_idx").on(table.userId),
     index("task_columnId_idx").on(table.columnId),
+    index("task_parentTaskId_idx").on(table.parentTaskId),
+    index("task_sprintId_idx").on(table.sprintId),
     unique("task_project_number_unique").on(table.projectId, table.number),
+    foreignKey({
+      columns: [table.parentTaskId],
+      foreignColumns: [table.id],
+      name: "task_parent_task_id_fk",
+    })
+      .onDelete("set null")
+      .onUpdate("cascade"),
   ],
 );
 
@@ -1027,4 +1074,39 @@ export const organizationRoleRelations = relations(
       references: [workspace.id],
     }),
   }),
+);
+
+// Append-only audit trail. Deliberately no foreign keys: rows must survive
+// deletion of the referenced workspace/project/user (names are denormalized).
+export const auditLogTable = pgTable(
+  "audit_log",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    workspaceId: text("workspace_id").notNull(),
+    workspaceName: text("workspace_name"),
+    projectId: text("project_id"),
+    projectName: text("project_name"),
+    userId: text("user_id"),
+    userName: text("user_name"),
+    userEmail: text("user_email"),
+    action: text("action").notNull(),
+    entityType: text("entity_type").notNull(),
+    entityId: text("entity_id"),
+    detail: jsonb("detail"),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("audit_log_workspaceId_createdAt_idx").on(
+      table.workspaceId,
+      table.createdAt,
+    ),
+  ],
 );

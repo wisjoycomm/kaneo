@@ -239,6 +239,34 @@
 			"when": 1784374645880,
 			"tag": "0033_public_patriot",
 			"breakpoints": true
+		},
+		{
+			"idx": 34,
+			"version": "7",
+			"when": 1784730015683,
+			"tag": "0034_tired_violations",
+			"breakpoints": true
+		},
+		{
+			"idx": 35,
+			"version": "7",
+			"when": 1784730524671,
+			"tag": "0035_ambiguous_madrox",
+			"breakpoints": true
+		},
+		{
+			"idx": 36,
+			"version": "7",
+			"when": 1784730683063,
+			"tag": "0036_old_giant_man",
+			"breakpoints": true
+		},
+		{
+			"idx": 37,
+			"version": "7",
+			"when": 1784732688366,
+			"tag": "0037_worried_dagger",
+			"breakpoints": true
 		}
 	]
 }
