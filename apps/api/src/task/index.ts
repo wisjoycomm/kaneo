@@ -24,10 +24,13 @@ import bulkUpdateTasks from "./controllers/bulk-update-tasks";
 import createTask from "./controllers/create-task";
 import deleteTask from "./controllers/delete-task";
 import exportTasks from "./controllers/export-tasks";
+import getEpics from "./controllers/get-epics";
+import getMyTasks from "./controllers/get-my-tasks";
 import getTask from "./controllers/get-task";
 import getTasks from "./controllers/get-tasks";
 import importTasks from "./controllers/import-tasks";
 import moveTask from "./controllers/move-task";
+import setTaskParent from "./controllers/set-task-parent";
 import updateTask from "./controllers/update-task";
 import updateTaskAssignee from "./controllers/update-task-assignee";
 import updateTaskDescription from "./controllers/update-task-description";
@@ -184,6 +187,8 @@ const task = new Hono<{
         priority: v.picklist(VALID_PRIORITIES),
         status: v.string(),
         userId: v.optional(v.string()),
+        type: v.optional(v.picklist(["task", "epic"])),
+        parentTaskId: v.optional(v.string()),
       }),
     ),
     workspaceAccess.fromProject("projectId"),
@@ -198,6 +203,8 @@ const task = new Hono<{
         priority,
         status,
         userId,
+        type,
+        parentTaskId,
       } = c.req.valid("json");
 
       const task = await createTask({
@@ -210,9 +217,112 @@ const task = new Hono<{
         dueDate: dueDate ? new Date(dueDate) : undefined,
         priority,
         status,
+        taskType: type,
+        parentTaskId,
       });
 
       return c.json(task);
+    },
+  )
+  .get(
+    "/epics/:projectId",
+    describeRoute({
+      operationId: "getEpics",
+      tags: ["Tasks"],
+      description:
+        "Get the epic tree for a project with per-epic rollup progress",
+      responses: {
+        200: {
+          description: "Epic tree nodes",
+          content: {
+            "application/json": { schema: resolver(v.any()) },
+          },
+        },
+      },
+    }),
+    validator("param", v.object({ projectId: v.string() })),
+    workspaceAccess.fromProject("projectId"),
+    async (c) => {
+      const { projectId } = c.req.valid("param");
+      const epics = await getEpics(projectId);
+      return c.json(epics);
+    },
+  )
+  .put(
+    "/:id/parent",
+    describeRoute({
+      operationId: "setTaskParent",
+      tags: ["Tasks"],
+      description:
+        "Set or clear a task's parent (epic nesting); optionally change its type",
+      responses: {
+        200: {
+          description: "Task updated",
+          content: {
+            "application/json": { schema: resolver(taskSchema) },
+          },
+        },
+      },
+    }),
+    validator("param", v.object({ id: v.string() })),
+    validator(
+      "json",
+      v.object({
+        parentTaskId: v.nullable(v.string()),
+        type: v.optional(v.picklist(["task", "epic"])),
+      }),
+    ),
+    workspaceAccess.fromTask(),
+    requireWorkspacePermission({ task: ["update"] }),
+    async (c) => {
+      const { id } = c.req.valid("param");
+      const { parentTaskId, type } = c.req.valid("json");
+      const task = await setTaskParent(id, parentTaskId, type);
+      return c.json(task);
+    },
+  )
+  .get(
+    "/mine",
+    describeRoute({
+      operationId: "listMyTasks",
+      tags: ["Tasks"],
+      description:
+        "Get all tasks assigned to the signed-in user across a workspace",
+      responses: {
+        200: {
+          description: "Tasks assigned to the signed-in user",
+          content: {
+            "application/json": { schema: resolver(v.array(taskSchema)) },
+          },
+        },
+      },
+    }),
+    validator(
+      "query",
+      v.object({
+        workspaceId: v.string(),
+        status: v.optional(v.string()),
+        priority: v.optional(v.string()),
+        sortBy: v.optional(
+          v.picklist(["createdAt", "priority", "dueDate", "title", "number"]),
+        ),
+        sortOrder: v.optional(v.picklist(["asc", "desc"])),
+      }),
+    ),
+    workspaceAccess.fromQuery(),
+    async (c) => {
+      const { workspaceId, status, priority, sortBy, sortOrder } =
+        c.req.valid("query");
+      const userId = c.get("userId");
+
+      const tasks = await getMyTasks(workspaceId, userId, {
+        status,
+        priority,
+        sortBy,
+        sortOrder,
+      });
+
+      return c.json(tasks);
     },
   )
   .get(

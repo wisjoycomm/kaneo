@@ -16,6 +16,8 @@ function useCreateTask() {
       startDate,
       dueDate,
       priority,
+      type,
+      parentTaskId,
     }: CreateTaskRequest) =>
       createTask(
         title,
@@ -26,10 +28,15 @@ function useCreateTask() {
         startDate ? new Date(startDate) : undefined,
         dueDate ? new Date(dueDate) : undefined,
         priority,
+        type,
+        parentTaskId,
       ),
     onSuccess: (_data, variables) => {
       void queryClient.invalidateQueries({
         queryKey: ["tasks", variables.projectId],
+      });
+      void queryClient.invalidateQueries({
+        queryKey: ["epics", variables.projectId],
       });
     },
   });

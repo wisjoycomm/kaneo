@@ -16,6 +16,8 @@ async function createTask({
   dueDate,
   description,
   priority,
+  taskType,
+  parentTaskId,
 }: {
   projectId: string;
   currentUserId: string;
@@ -26,11 +28,24 @@ async function createTask({
   dueDate?: Date;
   description?: string;
   priority?: string;
+  taskType?: string;
+  parentTaskId?: string;
 }) {
   const resolvedStatus = status || "to-do";
   const resolvedPriority = priority || "no-priority";
 
   await assertValidTaskStatus(resolvedStatus, projectId);
+
+  if (parentTaskId) {
+    const parent = await db.query.taskTable.findFirst({
+      where: eq(taskTable.id, parentTaskId),
+    });
+    if (!parent || parent.projectId !== projectId) {
+      throw new HTTPException(400, {
+        message: "Parent task not found in this project",
+      });
+    }
+  }
 
   const [assignee] = await db
     .select({ name: userTable.name })
@@ -72,6 +87,8 @@ async function createTask({
       dueDate: dueDate || null,
       description: description || "",
       priority: resolvedPriority,
+      type: taskType === "epic" ? "epic" : "task",
+      parentTaskId: parentTaskId || null,
       number: nextTaskNumber + 1,
       position: nextPosition,
     })
