@@ -5,7 +5,7 @@ import queryClient from "@/query-client";
 type InviteWorkspaceUserRequest = {
   workspaceId: string;
   email: string;
-  role: "admin" | "member" | "owner";
+  role: string;
   resend?: boolean;
 };
 
@@ -19,7 +19,7 @@ function useInviteWorkspaceUser() {
     }: InviteWorkspaceUserRequest) => {
       const { data, error } = await authClient.organization.inviteMember({
         email,
-        role,
+        role: role as "admin" | "member" | "owner",
         organizationId: workspaceId,
         resend,
       });
