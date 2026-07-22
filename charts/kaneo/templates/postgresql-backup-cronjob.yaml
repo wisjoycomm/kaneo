@@ -1,0 +1,60 @@
+{{- if and .Values.postgresql.enabled .Values.postgresql.backup.enabled }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "kaneo.fullname" . }}-postgresql-backup
+  labels:
+    {{- include "kaneo.labels" . | nindent 4 }}
+    app.kubernetes.io/component: postgresql-backup
+spec:
+  schedule: {{ .Values.postgresql.backup.schedule | quote }}
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            {{- include "kaneo.selectorLabels" . | nindent 12 }}
+            app.kubernetes.io/component: postgresql-backup
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: postgresql-backup
+              image: "{{ .Values.postgresql.backup.image.repository }}:{{ .Values.postgresql.backup.image.tag }}"
+              imagePullPolicy: {{ .Values.postgresql.backup.image.pullPolicy }}
+              env:
+                - name: PGHOST
+                  value: {{ include "kaneo.fullname" . }}-postgresql
+                - name: PGPORT
+                  value: {{ .Values.postgresql.service.port | quote }}
+                - name: PGDATABASE
+                  value: {{ .Values.postgresql.auth.database }}
+                - name: PGUSER
+                  value: {{ .Values.postgresql.auth.username }}
+                - name: PGPASSWORD
+                  {{- if .Values.postgresql.auth.existingSecret }}
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.postgresql.auth.existingSecret }}
+                      key: {{ .Values.postgresql.auth.secretKeys.userPasswordKey }}
+                  {{- else }}
+                  value: {{ .Values.postgresql.auth.password }}
+                  {{- end }}
+                - name: RETENTION_DAYS
+                  value: {{ .Values.postgresql.backup.retentionDays | quote }}
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  set -eu
+                  dest="/backup/${PGDATABASE}-$(date +%Y%m%d-%H%M%S).sql.gz"
+                  echo "Dumping to ${dest}"
+                  pg_dump | gzip > "${dest}"
+                  find /backup -name '*.sql.gz' -mtime "+${RETENTION_DAYS}" -delete
+              volumeMounts:
+                - name: postgresql-backup
+                  mountPath: /backup
+          volumes:
+            - name: postgresql-backup
+              persistentVolumeClaim:
+                claimName: {{ include "kaneo.fullname" . }}-postgresql-backup
+{{- end }}

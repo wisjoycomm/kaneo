@@ -87,6 +87,13 @@ spec:
               value: {{ .Values.kaneo.env.disablePasswordRegistration | quote }}
             - name: DISABLE_EMAIL_OTP_SIGN_IN
               value: {{ .Values.kaneo.env.disableEmailOtpSignIn | quote }}
+            {{- if .Values.redis.enabled }}
+            - name: REDIS_URL
+              value: "redis://{{ include "kaneo.fullname" . }}-redis:{{ .Values.redis.service.port }}"
+            {{- else if .Values.redis.externalUrl }}
+            - name: REDIS_URL
+              value: {{ .Values.redis.externalUrl | quote }}
+            {{- end }}
             {{- with .Values.kaneo.extraEnv }}
             {{- toYaml . | nindent 12 }}
             {{- end }}

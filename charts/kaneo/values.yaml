@@ -57,6 +57,43 @@ postgresql:
   #   requests:
   #     cpu: 100m
   #     memory: 128Mi
+  # Scheduled backup of the PostgreSQL data via pg_dump (only used when postgresql.enabled)
+  backup:
+    enabled: false
+    # Standard cron schedule, default: daily at 02:00
+    schedule: "0 2 * * *"
+    # How many days of dumps to keep in the backup PVC
+    retentionDays: 7
+    image:
+      repository: postgres
+      tag: 16-alpine
+      pullPolicy: IfNotPresent
+    persistence:
+      size: 8Gi
+      storageClass: ""
+      accessMode: ReadWriteOnce
+    resources: {}
+# Redis configuration, used for multi-instance WebSocket pub/sub (REDIS_URL).
+# Single-instance deployments don't need this - Kaneo falls back to in-memory pub/sub.
+redis:
+  # Set to true to deploy a single-pod Redis as part of this chart and wire REDIS_URL automatically.
+  enabled: false
+  image:
+    repository: redis
+    tag: 7-alpine
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 6379
+  persistence:
+    enabled: false
+    size: 1Gi
+    storageClass: ""
+    accessMode: ReadWriteOnce
+  resources: {}
+  # Use an external Redis / Sentinel / cluster instead of the in-chart deployment.
+  # Set redis.enabled=false and provide the full connection string here.
+  externalUrl: ""
 # Kaneo application configuration (combined API + web frontend)
 kaneo:
   image:

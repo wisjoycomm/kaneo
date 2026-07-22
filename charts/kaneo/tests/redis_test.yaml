@@ -1,0 +1,51 @@
+suite: redis
+templates:
+  - redis-deployment.yaml
+  - services.yaml
+  - pvc.yaml
+tests:
+  - it: renders nothing when redis is disabled (default)
+    template: redis-deployment.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: renders a deployment when redis is enabled
+    template: redis-deployment.yaml
+    set:
+      redis.enabled: true
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: "redis:7-alpine"
+
+  - it: renders a redis service when enabled
+    template: services.yaml
+    set:
+      redis.enabled: true
+    documentIndex: 1
+    asserts:
+      - isKind:
+          of: Service
+      - equal:
+          path: metadata.labels["app.kubernetes.io/component"]
+          value: redis
+
+  - it: does not render a redis PVC when persistence is disabled (default)
+    template: pvc.yaml
+    set:
+      redis.enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+
+  - it: renders a redis PVC when persistence is enabled
+    template: pvc.yaml
+    set:
+      redis.enabled: true
+      redis.persistence.enabled: true
+    asserts:
+      - hasDocuments:
+          count: 2

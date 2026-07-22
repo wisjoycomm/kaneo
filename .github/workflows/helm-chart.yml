@@ -77,6 +77,14 @@ jobs:
       - name: Render chart (${{ matrix.name }})
         run: helm template kaneo "$CHART_PATH" ${{ matrix.args }}
 
+      - name: Install helm-unittest plugin
+        if: matrix.name == 'default'
+        run: helm plugin install https://github.com/helm-unittest/helm-unittest --version v0.8.2
+
+      - name: Run chart unit tests
+        if: matrix.name == 'default'
+        run: helm unittest "$CHART_PATH"
+
   publish:
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-24.04

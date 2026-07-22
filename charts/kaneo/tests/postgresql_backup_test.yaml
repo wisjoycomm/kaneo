@@ -1,0 +1,30 @@
+suite: postgresql-backup
+templates:
+  - postgresql-backup-cronjob.yaml
+  - pvc.yaml
+tests:
+  - it: renders nothing when backup is disabled (default)
+    template: postgresql-backup-cronjob.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: renders a CronJob with the configured schedule when enabled
+    template: postgresql-backup-cronjob.yaml
+    set:
+      postgresql.backup.enabled: true
+      postgresql.backup.schedule: "0 3 * * *"
+    asserts:
+      - isKind:
+          of: CronJob
+      - equal:
+          path: spec.schedule
+          value: "0 3 * * *"
+
+  - it: renders a backup PVC when enabled
+    template: pvc.yaml
+    set:
+      postgresql.backup.enabled: true
+    asserts:
+      - hasDocuments:
+          count: 2
