@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { describeRoute, resolver, validator } from "hono-openapi";
 import * as v from "valibot";
+import { publishEvent } from "../events";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
 import createColumn from "./controllers/create-column";
@@ -12,6 +13,7 @@ import updateColumn from "./controllers/update-column";
 const column = new Hono<{
   Variables: {
     userId: string;
+    workspaceId: string;
   };
 }>()
   .get(
@@ -74,6 +76,13 @@ const column = new Hono<{
         color,
         isFinal,
       });
+      await publishEvent("column.created", {
+        workspaceId: c.get("workspaceId"),
+        userId: c.get("userId"),
+        projectId,
+        columnId: result?.id,
+        columnName: result?.name,
+      });
       return c.json(result);
     },
   )
@@ -110,6 +119,11 @@ const column = new Hono<{
       const { projectId } = c.req.valid("param");
       const { columns } = c.req.valid("json");
       const result = await reorderColumns(projectId, columns);
+      await publishEvent("column.reordered", {
+        workspaceId: c.get("workspaceId"),
+        userId: c.get("userId"),
+        projectId,
+      });
       return c.json(result);
     },
   )
@@ -144,6 +158,13 @@ const column = new Hono<{
       const { id } = c.req.valid("param");
       const data = c.req.valid("json");
       const result = await updateColumn(id, data);
+      await publishEvent("column.updated", {
+        workspaceId: c.get("workspaceId"),
+        userId: c.get("userId"),
+        projectId: result.projectId,
+        columnId: result.id,
+        columnName: result.name,
+      });
       return c.json(result);
     },
   )
@@ -168,6 +189,13 @@ const column = new Hono<{
     async (c) => {
       const { id } = c.req.valid("param");
       const result = await deleteColumn(id);
+      await publishEvent("column.deleted", {
+        workspaceId: c.get("workspaceId"),
+        userId: c.get("userId"),
+        projectId: result.projectId,
+        columnId: result.id,
+        columnName: result.name,
+      });
       return c.json(result);
     },
   );
