@@ -1,6 +1,13 @@
 import { useLocation, useNavigate } from "@tanstack/react-router";
-import { CalendarDays, SquareKanban, SquircleDashed } from "lucide-react";
+import {
+  CalendarDays,
+  Layers,
+  SquareKanban,
+  SquircleDashed,
+  Timer,
+} from "lucide-react";
 import { type ReactNode, useState } from "react";
+import { useTranslation } from "react-i18next";
 import MobileProjectNav from "@/components/common/header/mobile-project-nav";
 import ProjectCrumbSelect from "@/components/common/header/project-crumb-select";
 import WorkspaceCrumbSelect from "@/components/common/header/workspace-crumb-select";
@@ -26,7 +33,7 @@ type ProjectLayoutProps = {
   headerActions?: ReactNode;
   children: ReactNode;
   showViewSwitcher?: boolean;
-  activeView?: "backlog" | "board" | "gantt";
+  activeView?: "backlog" | "board" | "gantt" | "epics" | "sprints";
 };
 
 export default function ProjectLayout({
@@ -37,6 +44,7 @@ export default function ProjectLayout({
   showViewSwitcher = true,
   activeView,
 }: ProjectLayoutProps) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const { data: project } = useGetProject({ id: projectId, workspaceId });
@@ -51,7 +59,11 @@ export default function ProjectLayout({
       ? "backlog"
       : location.pathname.includes("/gantt")
         ? "gantt"
-        : "board");
+        : location.pathname.includes("/epics")
+          ? "epics"
+          : location.pathname.includes("/sprints")
+            ? "sprints"
+            : "board");
 
   const handleNavigateToBacklog = () => {
     navigate({
@@ -74,6 +86,20 @@ export default function ProjectLayout({
     });
   };
 
+  const handleNavigateToEpics = () => {
+    navigate({
+      to: "/dashboard/workspace/$workspaceId/project/$projectId/epics",
+      params: { workspaceId, projectId },
+    });
+  };
+
+  const handleNavigateToSprints = () => {
+    navigate({
+      to: "/dashboard/workspace/$workspaceId/project/$projectId/sprints",
+      params: { workspaceId, projectId },
+    });
+  };
+
   const handleProjectSwitch = (nextProjectId: string) => {
     navigate({
       to:
@@ -81,7 +107,11 @@ export default function ProjectLayout({
           ? "/dashboard/workspace/$workspaceId/project/$projectId/backlog"
           : resolvedView === "gantt"
             ? "/dashboard/workspace/$workspaceId/project/$projectId/gantt"
-            : "/dashboard/workspace/$workspaceId/project/$projectId/board",
+            : resolvedView === "epics"
+              ? "/dashboard/workspace/$workspaceId/project/$projectId/epics"
+              : resolvedView === "sprints"
+                ? "/dashboard/workspace/$workspaceId/project/$projectId/sprints"
+                : "/dashboard/workspace/$workspaceId/project/$projectId/board",
       params: {
         workspaceId,
         projectId: nextProjectId,
@@ -135,6 +165,8 @@ export default function ProjectLayout({
                 onSelectBacklog={handleNavigateToBacklog}
                 onSelectBoard={handleNavigateToBoard}
                 onSelectGantt={handleNavigateToGantt}
+                onSelectEpics={handleNavigateToEpics}
+                onSelectSprints={handleNavigateToSprints}
                 onSelectProject={handleProjectSwitch}
                 onAddProject={() => setIsCreateProjectModalOpen(true)}
               />
@@ -177,6 +209,30 @@ export default function ProjectLayout({
                 >
                   <CalendarDays className="size-3.5" />
                   Gantt
+                </Button>
+                <Button
+                  variant={resolvedView === "epics" ? "secondary" : "ghost"}
+                  size="xs"
+                  onClick={handleNavigateToEpics}
+                  className={cn(
+                    "h-6 gap-1.5 rounded-md px-2 text-xs",
+                    resolvedView !== "epics" && "text-muted-foreground",
+                  )}
+                >
+                  <Layers className="size-3.5" />
+                  {t("tasks:epics.title", { defaultValue: "Epics" })}
+                </Button>
+                <Button
+                  variant={resolvedView === "sprints" ? "secondary" : "ghost"}
+                  size="xs"
+                  onClick={handleNavigateToSprints}
+                  className={cn(
+                    "h-6 gap-1.5 rounded-md px-2 text-xs",
+                    resolvedView !== "sprints" && "text-muted-foreground",
+                  )}
+                >
+                  <Timer className="size-3.5" />
+                  {t("tasks:sprints.title", { defaultValue: "Sprints" })}
                 </Button>
               </div>
             )}

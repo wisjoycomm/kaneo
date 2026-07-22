@@ -16,6 +16,7 @@ import {
 } from "hono-openapi";
 import * as v from "valibot";
 import activity from "./activity";
+import auditLog from "./audit-log";
 import { auth } from "./auth";
 import column from "./column";
 import comment from "./comment";
@@ -31,6 +32,9 @@ import giteaIntegration, { handleGiteaWebhookRoute } from "./gitea-integration";
 import githubIntegration, {
   handleGithubWebhookRoute,
 } from "./github-integration";
+import gitlabIntegration, {
+  handleGitlabWebhookRoute,
+} from "./gitlab-integration";
 import getInstanceStatus from "./instance/controllers/get-instance-status";
 import invitation from "./invitation";
 import label from "./label";
@@ -46,6 +50,7 @@ import { getPublicProject } from "./project/controllers/get-public-project";
 import { initializeScheduler, shutdownScheduler } from "./scheduler";
 import search from "./search";
 import slackIntegration from "./slack-integration";
+import sprint from "./sprint";
 import { getPrivateObject } from "./storage/s3";
 import task from "./task";
 import taskRelation from "./task-relation";
@@ -225,6 +230,11 @@ export function createApp() {
   api.post(
     "/gitea-integration/webhook/:integrationId",
     handleGiteaWebhookRoute,
+  );
+
+  api.post(
+    "/gitlab-integration/webhook/:integrationId",
+    handleGitlabWebhookRoute,
   );
 
   const invitationPublicApi = api.get("/invitation/public/:id", async (c) => {
@@ -547,6 +557,10 @@ export function createApp() {
     githubIntegration,
   );
   const giteaIntegrationApi = api.route("/gitea-integration", giteaIntegration);
+  const gitlabIntegrationApi = api.route(
+    "/gitlab-integration",
+    gitlabIntegration,
+  );
   const genericWebhookIntegrationApi = api.route(
     "/generic-webhook-integration",
     genericWebhookIntegration,
@@ -563,6 +577,8 @@ export function createApp() {
   const taskRelationApi = api.route("/task-relation", taskRelation);
   const externalLinkApi = api.route("/external-link", externalLink);
   const workflowRuleApi = api.route("/workflow-rule", workflowRule);
+  const auditLogApi = api.route("/audit-log", auditLog);
+  const sprintApi = api.route("/sprint", sprint);
   const invitationApi = api.route("/invitation", invitation);
   const workspaceApi = api.route("/workspace", workspace);
 
@@ -713,6 +729,7 @@ export function createApp() {
     genericWebhookIntegrationApi,
     githubIntegrationApi,
     giteaIntegrationApi,
+    gitlabIntegrationApi,
     invitationApi,
     invitationPublicApi,
     labelApi,
@@ -727,6 +744,8 @@ export function createApp() {
     telegramIntegrationApi,
     timeEntryApi,
     workflowRuleApi,
+    auditLogApi,
+    sprintApi,
     workspaceApi,
     oauthApi,
   };
@@ -829,6 +848,7 @@ const {
   genericWebhookIntegrationApi,
   githubIntegrationApi,
   giteaIntegrationApi,
+  gitlabIntegrationApi,
   invitationApi,
   invitationPublicApi,
   labelApi,
@@ -843,6 +863,8 @@ const {
   telegramIntegrationApi,
   timeEntryApi,
   workflowRuleApi,
+  auditLogApi,
+  sprintApi,
   workspaceApi,
   oauthApi,
 } = createdApp;
@@ -869,6 +891,7 @@ export type AppType =
   | typeof searchApi
   | typeof githubIntegrationApi
   | typeof giteaIntegrationApi
+  | typeof gitlabIntegrationApi
   | typeof genericWebhookIntegrationApi
   | typeof discordIntegrationApi
   | typeof slackIntegrationApi
@@ -876,6 +899,8 @@ export type AppType =
   | typeof taskRelationApi
   | typeof externalLinkApi
   | typeof workflowRuleApi
+  | typeof auditLogApi
+  | typeof sprintApi
   | typeof invitationApi
   | typeof workspaceApi
   | typeof publicProjectApi
