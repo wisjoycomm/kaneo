@@ -1,4 +1,4 @@
-import { useSortable } from "@dnd-kit/sortable";
+﻿import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useNavigate } from "@tanstack/react-router";
 import { format } from "date-fns";
@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   HoverCard,
   HoverCardContent,
@@ -132,7 +133,7 @@ function TaskRow({ task, projectSlug }: TaskRowProps) {
 
     if (e.metaKey || e.ctrlKey) {
       e.preventDefault();
-      toggleSelection(task.id);
+      toggleSelection(task.id, task.status);
       return;
     }
 
@@ -198,6 +199,26 @@ function TaskRow({ task, projectSlug }: TaskRowProps) {
             {...attributes}
             {...listeners}
           >
+            {/* biome-ignore lint/a11y/noStaticElementInteractions: isolation wrapper - the checkbox inside is the interactive element */}
+            <div
+              className={cn(
+                "-m-1 flex-shrink-0 p-1 transition-opacity",
+                isTaskSelected
+                  ? "opacity-100"
+                  : "opacity-0 group-hover:opacity-100",
+              )}
+              onClick={(e) => e.stopPropagation()}
+              onPointerDown={(e) => e.stopPropagation()}
+              onKeyDown={(e) => e.stopPropagation()}
+            >
+              <Checkbox
+                checked={isTaskSelected}
+                onCheckedChange={() => toggleSelection(task.id, task.status)}
+                aria-label={t("tasks:bulk.selectTask", {
+                  defaultValue: "Select task",
+                })}
+              />
+            </div>
             {showPriority && (
               <div className="flex-shrink-0 first:[&_svg]:h-4 first:[&_svg]:w-4">
                 {getPriorityIcon(task.priority ?? "")}

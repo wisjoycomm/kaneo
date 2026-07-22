@@ -12,6 +12,7 @@ import {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
 } from "@/components/ui/context-menu";
+import { useBulkOperations } from "@/hooks/mutations/task/use-bulk-operations";
 import { useUpdateTask } from "@/hooks/mutations/task/use-update-task";
 import { useUpdateTaskAssignee } from "@/hooks/mutations/task/use-update-task-assignee";
 import { useUpdateTaskDescription } from "@/hooks/mutations/task/use-update-task-description";
@@ -20,14 +21,17 @@ import { useUpdateTaskStatus } from "@/hooks/mutations/task/use-update-task-stat
 import { useUpdateTaskPriority } from "@/hooks/mutations/task/use-update-task-status-priority";
 import { useUpdateTaskTitle } from "@/hooks/mutations/task/use-update-task-title";
 import { useGetColumns } from "@/hooks/queries/column/use-get-columns";
+import { useColumnTransitions } from "@/hooks/queries/task/use-column-transitions";
 import { useGetActiveWorkspaceUsers } from "@/hooks/queries/workspace-users/use-get-active-workspace-users";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { getColumnIcon } from "@/lib/column";
+import { isTransitionAllowed } from "@/lib/column-transitions";
 import { generateLink } from "@/lib/generate-link";
 import { getInitials } from "@/lib/get-initials";
 import { getPriorityLabel } from "@/lib/i18n/domain";
 import { getPriorityIcon } from "@/lib/priority";
 import { toast } from "@/lib/toast";
+import useBulkSelectionStore from "@/store/bulk-selection";
 import useProjectStore from "@/store/project";
 import type Task from "@/types/task";
 
@@ -64,6 +68,7 @@ export default function TaskCardContextMenuContent({
           icon: col.icon,
           isFinal: col.isFinal,
         }));
+  const columnTransitions = useColumnTransitions(taskCardContext.projectId);
   const { data: workspaceUsers } = useGetActiveWorkspaceUsers(
     taskCardContext.worskpaceId,
   );
@@ -77,6 +82,14 @@ export default function TaskCardContextMenuContent({
   const { canManageTasks, canAssignTasks } = useWorkspacePermission();
   const canEdit = canManageTasks();
   const canAssign = canAssignTasks();
+
+  // Right-clicking a task that is part of a multi-selection applies the
+  // action to the whole selection, like the bulk toolbar.
+  const { selectedTaskIds, clearSelection } = useBulkSelectionStore();
+  const isMulti = selectedTaskIds.has(task.id) && selectedTaskIds.size > 1;
+  const targetIds = isMulti ? Array.from(selectedTaskIds) : [task.id];
+  const { bulkChangeStatus, bulkPriority, bulkAssign, bulkDueDate } =
+    useBulkOperations();
 
   const usersOptions = useMemo(() => {
     return workspaceUsers?.members?.map((member) => ({
@@ -97,6 +110,21 @@ export default function TaskCardContextMenuContent({
 
   const handleChange = async (field: keyof Task, value: string | Date) => {
     try {
+      if (isMulti && field === "priority") {
+        await bulkPriority({ taskIds: targetIds, priority: value as string });
+        clearSelection();
+        return;
+      }
+      if (isMulti && field === "status") {
+        await bulkChangeStatus({ taskIds: targetIds, status: value as string });
+        clearSelection();
+        return;
+      }
+      if (isMulti && field === "userId") {
+        await bulkAssign({ taskIds: targetIds, userId: value as string });
+        clearSelection();
+        return;
+      }
       switch (field) {
         case "priority":
           await updateTaskPriority({ ...task, priority: value as string });
@@ -177,18 +205,27 @@ export default function TaskCardContextMenuContent({
             <span>{t("tasks:status.label")}</span>
           </ContextMenuSubTrigger>
           <ContextMenuSubContent className="w-48">
-            {columns.map((col) => (
-              <ContextMenuCheckboxItem
-                key={col.slug}
-                checked={task.status === col.slug}
-                onCheckedChange={() => handleChange("status", col.slug)}
-                closeOnClick
-                className="[&_svg]:text-muted-foreground"
-              >
-                {getColumnIcon(col.slug, col.isFinal, col.icon)}
-                <span>{col.name}</span>
-              </ContextMenuCheckboxItem>
-            ))}
+            {/* All columns in stable order — disallowed transitions are
+                disabled, never hidden, so item positions don't shift and a
+                muscle-memory click can't land on the wrong status. */}
+            {columns.map((col) => {
+              const allowed =
+                isMulti ||
+                isTransitionAllowed(columnTransitions, task.status, col.slug);
+              return (
+                <ContextMenuCheckboxItem
+                  key={col.slug}
+                  checked={task.status === col.slug}
+                  disabled={!allowed}
+                  onCheckedChange={() => handleChange("status", col.slug)}
+                  closeOnClick
+                  className="[&_svg]:text-muted-foreground data-disabled:opacity-40"
+                >
+                  {getColumnIcon(col.slug, col.isFinal, col.icon)}
+                  <span>{col.name}</span>
+                </ContextMenuCheckboxItem>
+              );
+            })}
           </ContextMenuSubContent>
         </ContextMenuSub>
       )}
@@ -205,10 +242,18 @@ export default function TaskCardContextMenuContent({
                 selected={task.dueDate ? new Date(task.dueDate) : undefined}
                 onSelect={async (date) => {
                   try {
-                    await updateTaskDueDate({
-                      ...task,
-                      dueDate: date?.toISOString() || null,
-                    });
+                    if (isMulti) {
+                      await bulkDueDate({
+                        taskIds: targetIds,
+                        dueDate: date?.toISOString() ?? null,
+                      });
+                      clearSelection();
+                    } else {
+                      await updateTaskDueDate({
+                        ...task,
+                        dueDate: date?.toISOString() || null,
+                      });
+                    }
                     toast.success(t("tasks:dueDate.updateSuccess"));
                   } catch (error) {
                     toast.error(

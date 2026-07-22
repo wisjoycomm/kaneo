@@ -1,3 +1,4 @@
+import { useIsMutating } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Search } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -18,6 +19,7 @@ import { useBoardSort } from "@/hooks/use-board-sort";
 import { useRegisterShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { useTaskFiltersWithLabelsSupport } from "@/hooks/use-task-filters-with-labels-support";
 import { sortTasks } from "@/lib/sort-tasks";
+import useBulkSelectionStore from "@/store/bulk-selection";
 import useProjectStore from "@/store/project";
 import { useUserPreferencesStore } from "@/store/user-preferences";
 
@@ -82,6 +84,16 @@ function RouteComponent() {
   const { data } = useGetTasks(projectId);
   const { project, setProject } = useProjectStore();
   const { viewMode, setViewMode } = useUserPreferencesStore();
+  const clearBulkSelection = useBulkSelectionStore(
+    (state) => state.clearSelection,
+  );
+
+  // Stale selections must not leak across projects or board/list switches —
+  // a bulk action would silently hit tasks that are no longer on screen.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: projectId/viewMode are intentional triggers, not referenced values
+  useEffect(() => {
+    clearBulkSelection();
+  }, [clearBulkSelection, projectId, viewMode]);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [boardSearchQuery, setBoardSearchQuery] = useState("");
   const [isBoardSearchMounted, setIsBoardSearchMounted] = useState(false);
@@ -120,11 +132,18 @@ function RouteComponent() {
     },
   });
 
+  // Task position updates fan out one PUT per task; a refetch triggered by an
+  // early PUT can return stale ordering while later PUTs are still in flight.
+  // Syncing the store from such a refetch makes dropped cards flick back to
+  // their old position, so hold off until every task update has settled — the
+  // last mutation's invalidation refetches once more and lands here clean.
+  const pendingTaskUpdates = useIsMutating({ mutationKey: ["update-task"] });
+
   useEffect(() => {
-    if (data) {
+    if (data && pendingTaskUpdates === 0) {
       setProject(data);
     }
-  }, [data, setProject]);
+  }, [data, setProject, pendingTaskUpdates]);
 
   const openBoardSearch = useCallback(() => {
     setIsBoardSearchMounted(true);

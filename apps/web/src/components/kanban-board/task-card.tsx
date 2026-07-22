@@ -1,4 +1,4 @@
-import { useSortable } from "@dnd-kit/sortable";
+﻿import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useNavigate } from "@tanstack/react-router";
 import { format } from "date-fns";
@@ -21,6 +21,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   HoverCard,
   HoverCardContent,
@@ -112,7 +113,7 @@ function TaskCard({ task, disableDragDrop = false }: TaskCardProps) {
     transform: CSS.Transform.toString(transform),
     transition:
       transition || "transform 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-    opacity: isDragging ? 0.6 : 1,
+    opacity: 1,
     touchAction: isDragging ? "none" : "auto",
     zIndex: isDragging ? 999 : "auto",
   };
@@ -133,7 +134,7 @@ function TaskCard({ task, disableDragDrop = false }: TaskCardProps) {
     if (!project || !task || !workspace) return;
 
     if ((e as React.MouseEvent).metaKey || (e as React.KeyboardEvent).ctrlKey) {
-      toggleSelection(task.id);
+      toggleSelection(task.id, task.status);
       return;
     }
 
@@ -155,7 +156,7 @@ function TaskCard({ task, disableDragDrop = false }: TaskCardProps) {
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Escape") {
-      toggleSelection(task.id);
+      toggleSelection(task.id, task.status);
     }
   };
 
@@ -185,7 +186,7 @@ function TaskCard({ task, disableDragDrop = false }: TaskCardProps) {
               disableDragDrop ? "cursor-default" : "cursor-move"
             } ${
               isDragging
-                ? "border-ring/40 bg-card shadow-lg"
+                ? "border-2 border-dashed border-ring/50 bg-accent/30 shadow-none *:invisible"
                 : "hover:border-border/90 hover:bg-background hover:shadow-sm"
             } ${
               isTaskSelected
@@ -200,8 +201,27 @@ function TaskCard({ task, disableDragDrop = false }: TaskCardProps) {
               }
             }}
           >
+            {/* biome-ignore lint/a11y/noStaticElementInteractions: isolation wrapper - the checkbox inside is the interactive element */}
+            <div
+              className={`absolute top-2 left-2 z-10 rounded bg-background p-0.5 transition-opacity ${
+                isTaskSelected
+                  ? "opacity-100"
+                  : "opacity-0 group-hover:opacity-100"
+              }`}
+              onClick={(e) => e.stopPropagation()}
+              onPointerDown={(e) => e.stopPropagation()}
+              onKeyDown={(e) => e.stopPropagation()}
+            >
+              <Checkbox
+                checked={isTaskSelected}
+                onCheckedChange={() => toggleSelection(task.id, task.status)}
+                aria-label={t("tasks:bulk.selectTask", {
+                  defaultValue: "Select task",
+                })}
+              />
+            </div>
             {showTaskNumbers && (
-              <div className="mb-2 text-[10px] font-mono text-muted-foreground/90">
+              <div className="mb-2 pl-5 text-[10px] font-mono text-muted-foreground/90">
                 {project?.slug}-{task.number}
               </div>
             )}

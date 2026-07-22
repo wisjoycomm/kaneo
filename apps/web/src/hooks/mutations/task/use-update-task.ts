@@ -6,14 +6,20 @@ export function useUpdateTask() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    mutationKey: ["update-task"],
     mutationFn: (task: Task) => updateTask(task.id, task),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: ["task", variables.id],
       });
-      queryClient.invalidateQueries({
-        queryKey: ["tasks", variables.projectId],
-      });
+      // Board drops fan out one update per repositioned task; refetching the
+      // whole board per task makes dropped cards flicker through stale
+      // orderings. Only the last in-flight update refetches the board.
+      if (queryClient.isMutating({ mutationKey: ["update-task"] }) <= 1) {
+        queryClient.invalidateQueries({
+          queryKey: ["tasks", variables.projectId],
+        });
+      }
       queryClient.invalidateQueries({
         queryKey: ["notifications"],
       });
