@@ -136,6 +136,9 @@ async function getTasks(projectId: string, options: GetTasksOptions = {}) {
     assigneeId: userTable.id,
     assigneeImage: userTable.image,
     projectId: taskTable.projectId,
+    type: taskTable.type,
+    parentTaskId: taskTable.parentTaskId,
+    sprintId: taskTable.sprintId,
   };
 
   const query = db
@@ -261,6 +264,10 @@ async function getTasks(projectId: string, options: GetTasksOptions = {}) {
       description: project.description,
       isPublic: project.isPublic,
       workspaceId: project.workspaceId,
+      columnTransitions: project.columnTransitions as Record<
+        string,
+        string[]
+      > | null,
       columns,
       archivedTasks,
       plannedTasks,

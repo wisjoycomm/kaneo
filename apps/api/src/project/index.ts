@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { describeRoute, resolver, validator } from "hono-openapi";
 import * as v from "valibot";
+import { publishEvent } from "../events";
 import { projectSchema } from "../schemas";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
@@ -81,6 +82,14 @@ const project = new Hono<{
       const { name, icon, slug } = c.req.valid("json");
       const workspaceId = c.get("workspaceId");
       const newProject = await createProjectCtrl(workspaceId, name, icon, slug);
+      if (newProject) {
+        await publishEvent("project.created", {
+          workspaceId,
+          userId: c.get("userId"),
+          projectId: newProject.id,
+          projectName: newProject.name,
+        });
+      }
       return c.json(newProject);
     },
   )
@@ -132,13 +141,17 @@ const project = new Hono<{
         slug: v.string(),
         description: v.string(),
         isPublic: v.boolean(),
+        columnTransitions: v.optional(
+          v.nullable(v.record(v.string(), v.array(v.string()))),
+        ),
       }),
     ),
     workspaceAccess.fromProject(),
     requireWorkspacePermission({ project: ["update"] }),
     async (c) => {
       const { id } = c.req.valid("param");
-      const { name, icon, slug, description, isPublic } = c.req.valid("json");
+      const { name, icon, slug, description, isPublic, columnTransitions } =
+        c.req.valid("json");
       const workspaceId = c.get("workspaceId");
       const updatedProject = await updateProjectCtrl(
         id,
@@ -148,7 +161,16 @@ const project = new Hono<{
         description,
         isPublic,
         workspaceId,
+        columnTransitions,
       );
+      if (updatedProject) {
+        await publishEvent("project.updated", {
+          workspaceId,
+          userId: c.get("userId"),
+          projectId: updatedProject.id,
+          projectName: updatedProject.name,
+        });
+      }
       return c.json(updatedProject);
     },
   )
@@ -174,6 +196,14 @@ const project = new Hono<{
       const { id } = c.req.valid("param");
       const workspaceId = c.get("workspaceId");
       const deletedProject = await deleteProjectCtrl(id, workspaceId);
+      if (deletedProject) {
+        await publishEvent("project.deleted", {
+          workspaceId,
+          userId: c.get("userId"),
+          projectId: deletedProject.id,
+          projectName: deletedProject.name,
+        });
+      }
       return c.json(deletedProject);
     },
   )
@@ -199,6 +229,14 @@ const project = new Hono<{
       const { id } = c.req.valid("param");
       const workspaceId = c.get("workspaceId");
       const archivedProject = await archiveProjectCtrl(id, workspaceId);
+      if (archivedProject) {
+        await publishEvent("project.archived", {
+          workspaceId,
+          userId: c.get("userId"),
+          projectId: archivedProject.id,
+          projectName: archivedProject.name,
+        });
+      }
       return c.json(archivedProject);
     },
   )
@@ -224,6 +262,14 @@ const project = new Hono<{
       const { id } = c.req.valid("param");
       const workspaceId = c.get("workspaceId");
       const unarchivedProject = await unarchiveProjectCtrl(id, workspaceId);
+      if (unarchivedProject) {
+        await publishEvent("project.unarchived", {
+          workspaceId,
+          userId: c.get("userId"),
+          projectId: unarchivedProject.id,
+          projectName: unarchivedProject.name,
+        });
+      }
       return c.json(unarchivedProject);
     },
   );

@@ -10,9 +10,11 @@ import {
 import { ShortcutNumber } from "@/components/ui/shortcut-number";
 import { useUpdateTaskStatus } from "@/hooks/mutations/task/use-update-task-status";
 import { useGetColumns } from "@/hooks/queries/column/use-get-columns";
+import { useColumnTransitions } from "@/hooks/queries/task/use-column-transitions";
 import { useNumberedShortcuts } from "@/hooks/use-numbered-shortcuts";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { getColumnIcon } from "@/lib/column";
+import { isTransitionAllowed } from "@/lib/column-transitions";
 import { getStatusDisplayLabel } from "@/lib/i18n/domain";
 import { toast } from "@/lib/toast";
 import type Task from "@/types/task";
@@ -31,19 +33,27 @@ export default function SubtaskStatusPopover({
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const { data: columns = [] } = useGetColumns(projectId);
-  const statusOptions = columns.map((col) => ({
-    value: col.slug,
-    label: col.name,
-    icon: col.icon,
-    isFinal: col.isFinal,
-  }));
-  const { mutateAsync: updateTaskStatus } = useUpdateTaskStatus();
-  const { canManageTasks } = useWorkspacePermission();
-  const canEdit = canManageTasks();
+  const columnTransitions = useColumnTransitions(projectId);
 
   const allSameStatus =
     tasks.length > 0 && tasks.every((t) => t.status === tasks[0].status);
   const currentStatus = allSameStatus ? tasks[0].status : null;
+
+  const statusOptions = columns
+    .filter(
+      (col) =>
+        currentStatus === null ||
+        isTransitionAllowed(columnTransitions, currentStatus, col.slug),
+    )
+    .map((col) => ({
+      value: col.slug,
+      label: col.name,
+      icon: col.icon,
+      isFinal: col.isFinal,
+    }));
+  const { mutateAsync: updateTaskStatus } = useUpdateTaskStatus();
+  const { canManageTasks } = useWorkspacePermission();
+  const canEdit = canManageTasks();
 
   const handleStatusChange = useCallback(
     async (newStatus: string) => {

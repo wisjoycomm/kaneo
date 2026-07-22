@@ -11,6 +11,7 @@ async function updateProject(
   description: string,
   isPublic: boolean,
   workspaceId: string,
+  columnTransitions?: Record<string, string[]> | null,
 ) {
   const [existingProject] = await db
     .select()
@@ -36,6 +37,7 @@ async function updateProject(
       slug,
       description,
       isPublic,
+      ...(columnTransitions !== undefined && { columnTransitions }),
     })
     .where(eq(projectTable.id, id))
     .returning();

@@ -10,9 +10,11 @@ import {
 import { ShortcutNumber } from "@/components/ui/shortcut-number";
 import { useUpdateTaskStatus } from "@/hooks/mutations/task/use-update-task-status";
 import { useGetColumns } from "@/hooks/queries/column/use-get-columns";
+import { useColumnTransitions } from "@/hooks/queries/task/use-column-transitions";
 import { useNumberedShortcuts } from "@/hooks/use-numbered-shortcuts";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { getColumnIcon } from "@/lib/column";
+import { isTransitionAllowed } from "@/lib/column-transitions";
 import { getStatusDisplayLabel } from "@/lib/i18n/domain";
 import { toast } from "@/lib/toast";
 import type Task from "@/types/task";
@@ -29,6 +31,9 @@ export default function TaskStatusPopover({
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const { data: columns, isLoading, isError } = useGetColumns(task.projectId);
+  const columnTransitions = useColumnTransitions(task.projectId);
+  // All columns in stable order; disallowed transitions render disabled so
+  // option positions never shift underneath a muscle-memory click.
   const statusOptions = useMemo(
     () =>
       (columns ?? []).map((col) => ({
@@ -36,8 +41,9 @@ export default function TaskStatusPopover({
         label: col.name,
         icon: col.icon,
         isFinal: col.isFinal,
+        allowed: isTransitionAllowed(columnTransitions, task.status, col.slug),
       })),
-    [columns],
+    [columns, columnTransitions, task.status],
   );
   const { mutateAsync: updateTaskStatus } = useUpdateTaskStatus();
   const { canManageTasks } = useWorkspacePermission();
@@ -65,7 +71,9 @@ export default function TaskStatusPopover({
   const shortcutOptions = useMemo(
     () =>
       statusOptions.map((status) => ({
-        onSelect: () => handleStatusChange(status.value),
+        onSelect: () => {
+          if (status.allowed) void handleStatusChange(status.value);
+        },
       })),
     [handleStatusChange, statusOptions],
   );
@@ -93,7 +101,8 @@ export default function TaskStatusPopover({
                 key={status.value}
                 variant="ghost"
                 size="sm"
-                className="w-full justify-start gap-2 h-8 px-2 rounded-none first:rounded-t-md last:rounded-b-md"
+                disabled={!status.allowed}
+                className="w-full justify-start gap-2 h-8 px-2 rounded-none first:rounded-t-md last:rounded-b-md disabled:opacity-40"
                 onClick={() => handleStatusChange(status.value)}
               >
                 {getColumnIcon(status.value, status.isFinal, status.icon)}

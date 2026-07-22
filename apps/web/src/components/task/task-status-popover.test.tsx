@@ -19,6 +19,10 @@ vi.mock("@/hooks/mutations/task/use-update-task-status", () => ({
   useUpdateTaskStatus: () => ({ mutateAsync: vi.fn() }),
 }));
 
+vi.mock("@/hooks/queries/task/use-column-transitions", () => ({
+  useColumnTransitions: () => null,
+}));
+
 vi.mock("@/hooks/use-numbered-shortcuts", () => ({
   useNumberedShortcuts: vi.fn(),
 }));
