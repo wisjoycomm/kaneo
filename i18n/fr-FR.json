@@ -414,7 +414,21 @@
 			"toastPreferencesSaved": "Préférences de notification enregistrées",
 			"toastPreferencesSaveFailed": "Échec de l'enregistrement des préférences de notification",
 			"toastRuleSavedGeneric": "Règle de notification de l'espace de travail enregistrée",
-			"toastRuleRemovedGeneric": "Règle de notification de l'espace de travail supprimée"
+			"toastRuleRemovedGeneric": "Règle de notification de l'espace de travail supprimée",
+			"eventComments": "Commentaires et mentions",
+			"eventCommentsHint": "Inclut les nouveaux commentaires sur les tâches qui vous sont assignées et les mentions @ directes.",
+			"eventDueDateReminders": "Rappels d'échéance",
+			"eventPreferencesDescription": "Choisissez quels événements de tâche créent des notifications dans l'application et peuvent être envoyés à vos canaux connectés.",
+			"eventPreferencesTitle": "Me notifier pour",
+			"eventStatusChanges": "Changements de statut de la tâche",
+			"eventTaskAssignments": "Assignations de tâches",
+			"reminderLeadTimeHint": "Entre 1 heure et 30 jours à l'avance. Les notifications de retard sont envoyées séparément.",
+			"reminderLeadTimeInvalid": "Entrez un nombre entier entre 1 et {{max}}.",
+			"reminderLeadTimeLabel": "Me rappeler avant l'échéance",
+			"reminderLeadTimeUnitDays": "Jours",
+			"reminderLeadTimeUnitHours": "Heures",
+			"saveEventPreferences": "Enregistrer les types de notification",
+			"workspaceEnabledLabel": "Activer les notifications pour {{workspaceName}}"
 		},
 		"preferencesPage": {
 			"title": "Préférences",
@@ -906,11 +920,13 @@
 				"taskMoved": "Tâche déplacée",
 				"taskDueDateChanged": "Date d'échéance modifiée",
 				"taskAssigneeChanged": "Assigné modifié",
-				"taskUnassigned": "Tâche désassignée"
+				"taskUnassigned": "Tâche désassignée",
+				"dueDateReminder": "Rappels d'échéance"
 			},
 			"connect": "Connecter le webhook",
 			"saveChanges": "Enregistrer les modifications",
-			"disconnect": "Déconnecter"
+			"disconnect": "Déconnecter",
+			"reminderLeadTimeLabel": "Envoyer le webhook ce nombre d'heures à l'avance"
 		},
 		"telegramIntegration": {
 			"validation": {
@@ -1021,6 +1037,210 @@
 			"merged": "Fusionné",
 			"draft": "Brouillon",
 			"open": "Ouvert"
+		},
+		"workspaceLabels": {
+			"cardDescription": "Gérez les étiquettes pouvant être attribuées aux tâches.",
+			"colorLabel": "Couleur",
+			"createDescription": "Créez une nouvelle étiquette utilisable sur les tâches de cet espace de travail.",
+			"createError": "Échec de la création de l'étiquette",
+			"createLabel": "Créer une étiquette",
+			"createSuccess": "Étiquette créée",
+			"deleteConfirmDescription": "Cela supprimera définitivement cette étiquette de toutes les tâches. Cette action est irréversible.",
+			"deleteConfirmTitle": "Supprimer cette étiquette ?",
+			"deleteError": "Échec de la suppression de l'étiquette",
+			"deleteLabel": "Supprimer",
+			"deleteSuccess": "Étiquette supprimée",
+			"editDescription": "Mettez à jour le nom ou la couleur de cette étiquette.",
+			"editLabel": "Modifier l'étiquette",
+			"empty": "Aucune étiquette pour l'instant. Créez votre première étiquette pour commencer.",
+			"nameLabel": "Nom de l'étiquette",
+			"namePlaceholder": "Saisissez le nom de l'étiquette",
+			"nameRequired": "Le nom de l'étiquette est requis",
+			"pageTitle": "Paramètres des étiquettes",
+			"saveLabel": "Enregistrer",
+			"subtitle": "Créez, modifiez et supprimez les étiquettes au niveau de l'espace de travail.",
+			"title": "Étiquettes",
+			"updateError": "Échec de la mise à jour de l'étiquette",
+			"updateSuccess": "Étiquette mise à jour"
+		},
+		"workspaceRoles": {
+			"allChangesSaved": "Toutes les modifications enregistrées",
+			"createRole": "Créer un rôle",
+			"defaultBadge": "Par défaut",
+			"defaultRoleDescriptions": {
+				"admin": "A un accès complet à l'espace de travail.",
+				"member": "Peut créer et gérer des tâches et des projets.",
+				"viewer": "Peut consulter et commenter les tâches."
+			},
+			"defaultRoleHelp": "Rôle par défaut — le nom est réservé et la ligne ne peut pas être supprimée.",
+			"deleteDialog": {
+				"description": "Cela supprimera définitivement le rôle « {{role}} ». Les membres ayant ce rôle perdront ses autorisations.",
+				"title": "Supprimer le rôle"
+			},
+			"deleteRole": "Supprimer le rôle",
+			"discard": "Annuler",
+			"emptyDescription": "Les rôles par défaut apparaîtront ici une fois créés pour cet espace de travail.",
+			"emptyTitle": "Aucun rôle pour l'instant",
+			"loadError": "Échec du chargement des rôles.",
+			"loading": "Chargement…",
+			"nameHint": "Minuscules. Ne peut plus être modifié ensuite.",
+			"nameLabel": "Nom",
+			"namePlaceholder": "p. ex. relecteur",
+			"newRole": "Nouveau rôle",
+			"noAccess": "Vous devez être administrateur ou propriétaire pour gérer les rôles de l'espace de travail.",
+			"pageTitle": "Rôles",
+			"permissionCount_one": "{{count}} autorisation",
+			"permissionCount_other": "{{count}} autorisations",
+			"permissions": {
+				"label": {
+					"create": {
+						"description": "Peut créer des étiquettes",
+						"label": "Créer"
+					},
+					"delete": {
+						"description": "Peut supprimer des étiquettes",
+						"label": "Supprimer"
+					},
+					"read": {
+						"description": "Peut consulter les étiquettes",
+						"label": "Lire"
+					},
+					"update": {
+						"description": "Peut modifier les étiquettes",
+						"label": "Mettre à jour"
+					}
+				},
+				"project": {
+					"create": {
+						"description": "Peut créer de nouveaux projets",
+						"label": "Créer"
+					},
+					"delete": {
+						"description": "Peut supprimer des projets",
+						"label": "Supprimer"
+					},
+					"read": {
+						"description": "Peut consulter les projets",
+						"label": "Lire"
+					},
+					"share": {
+						"description": "Peut partager des projets",
+						"label": "Partager"
+					},
+					"update": {
+						"description": "Peut modifier les paramètres du projet",
+						"label": "Mettre à jour"
+					}
+				},
+				"task": {
+					"assign": {
+						"description": "Peut assigner des tâches aux membres",
+						"label": "Assigner"
+					},
+					"create": {
+						"description": "Peut créer des tâches",
+						"label": "Créer"
+					},
+					"delete": {
+						"description": "Peut supprimer des tâches",
+						"label": "Supprimer"
+					},
+					"read": {
+						"description": "Peut consulter les tâches",
+						"label": "Lire"
+					},
+					"update": {
+						"description": "Peut modifier les tâches",
+						"label": "Mettre à jour"
+					}
+				},
+				"workspace": {
+					"delete": {
+						"description": "Peut supprimer l'espace de travail",
+						"label": "Supprimer"
+					},
+					"manage_settings": {
+						"description": "Peut gérer les paramètres de l'espace de travail",
+						"label": "Gérer les paramètres"
+					},
+					"read": {
+						"description": "Peut consulter les paramètres de l'espace de travail",
+						"label": "Lire"
+					},
+					"update": {
+						"description": "Peut mettre à jour les paramètres de l'espace de travail",
+						"label": "Mettre à jour"
+					}
+				}
+			},
+			"resources": {
+				"label": "Étiquettes",
+				"project": "Projets",
+				"task": "Tâches",
+				"workspace": "Espace de travail"
+			},
+			"saveChanges": "Enregistrer les modifications",
+			"sectionSubtitle": "Modifiez les rôles par défaut ou ajoutez-en un sur mesure. Les membres conservent le nom de leur rôle attribué lors des modifications.",
+			"sectionTitle": "Rôles de l'espace de travail",
+			"subtitle": "Définissez les actions que les membres peuvent effectuer dans {{workspaceName}}.",
+			"thisWorkspace": "cet espace de travail",
+			"title": "Rôles",
+			"toast": {
+				"created": "Rôle créé",
+				"createError": "Échec de la création du rôle",
+				"deleted": "Rôle supprimé",
+				"deleteError": "Échec de la suppression du rôle",
+				"updated": "Rôle mis à jour",
+				"updateError": "Échec de la mise à jour du rôle"
+			},
+			"unsavedChanges": "Vous avez des modifications non enregistrées",
+			"validation": {
+				"nameExists": "Un rôle avec ce nom existe déjà",
+				"nameRequired": "Le nom du rôle est requis",
+				"permissionRequired": "Au moins une autorisation doit être sélectionnée"
+			}
+		},
+		"workspaceAuditLog": {
+			"columnAction": "Action",
+			"columnDetail": "Detail",
+			"columnProject": "Project",
+			"columnWhen": "When",
+			"columnWho": "Who",
+			"description": "Who did what and when across this workspace.",
+			"emptyDescription": "Changes to projects, columns and tasks will appear here.",
+			"emptyTitle": "No entries yet",
+			"next": "Next",
+			"noAccessDescription": "Only workspace admins can view the audit log.",
+			"noAccessTitle": "Admins only",
+			"pageOf": "Page {{page}} of {{pages}}",
+			"previous": "Previous",
+			"title": "Audit log",
+			"action": {
+				"archived": "archived",
+				"assignee_changed": "assignee changed",
+				"created": "created",
+				"deleted": "deleted",
+				"reordered": "reordered",
+				"status_changed": "status changed",
+				"unarchived": "unarchived",
+				"updated": "updated"
+			},
+			"entity": {
+				"column": "Column",
+				"project": "Project",
+				"task": "Task"
+			}
+		},
+		"projectWorkflowTransitions": {
+			"description": "Restrict which columns tasks can move to from each column.",
+			"hint": "Columns with no targets selected allow moving tasks to any column.",
+			"noColumns": "Create columns first to configure transitions.",
+			"resetToTemplate": "Reset to template",
+			"save": "Save transitions",
+			"title": "Workflow transitions",
+			"toastError": "Failed to save workflow transitions",
+			"toastSaved": "Workflow transitions saved",
+			"unrestricted": "Unrestricted"
 		}
 	},
 	"navigation": {
@@ -1052,7 +1272,8 @@
 			"members": "Membres",
 			"invitations": "Invitations",
 			"more": "Plus",
-			"backToBoard": "Retour au tableau"
+			"backToBoard": "Retour au tableau",
+			"myTasks": "Mes tâches"
 		},
 		"projectList": {
 			"viewProject": "Voir le projet",
@@ -1172,7 +1393,27 @@
 				"title": "Suivi du temps démarré",
 				"contentWithTask": "Le suivi du temps a démarré sur la tâche : {{taskTitle}}",
 				"contentWithoutTask": "Le suivi du temps a démarré sur une tâche"
+			},
+			"due_date_reminder": {
+				"content": "{{taskTitle}} arrive à échéance dans {{leadTime}}",
+				"title": "Tâche bientôt due"
+			},
+			"task_comment": {
+				"content": "Nouveau commentaire sur {{taskTitle}} : {{commentPreview}}",
+				"title": "{{commenterName}} a commenté votre tâche"
+			},
+			"task_overdue": {
+				"content": "{{taskTitle}} a dépassé son échéance",
+				"title": "Tâche en retard"
 			}
+		},
+		"reminderLeadTime": {
+			"days_one": "{{count}} jour",
+			"days_other": "{{count}} jours",
+			"hours_one": "{{count}} heure",
+			"hours_other": "{{count}} heures",
+			"minutes_one": "{{count}} minute",
+			"minutes_other": "{{count}} minutes"
 		}
 	},
 	"activity": {
@@ -1666,6 +1907,67 @@
 			"searchActions": "Rechercher des actions...",
 			"noActionsFound": "Aucune action trouvée.",
 			"changeStatus": "Changer le statut"
+		},
+		"epics": {
+			"addTask": "Add task",
+			"cancel": "Cancel",
+			"collapse": "Collapse epic",
+			"create": "Create",
+			"createError": "Failed to create",
+			"empty": "No epics yet",
+			"emptySubtitle": "Create an epic to group related tasks and track their progress.",
+			"epicTitlePlaceholder": "Epic title",
+			"expand": "Expand epic",
+			"newEpic": "New epic",
+			"pageTitle": "{{name}} — Epics",
+			"progress": "{{done}}/{{total}}",
+			"taskTitlePlaceholder": "Task title",
+			"title": "Epics",
+			"loadError": "Failed to load epics.",
+			"progressDone": "{{done}}/{{total}} done"
+		},
+		"sprints": {
+			"addTask": "Add to sprint",
+			"addTasks": "Add tasks",
+			"assignError": "Failed to update sprint tasks",
+			"cancel": "Cancel",
+			"collapse": "Collapse sprint",
+			"complete": "Complete",
+			"completeSuccess": "Sprint completed. {{count}} unfinished task(s) released back to the backlog.",
+			"create": "Create",
+			"createError": "Failed to create sprint",
+			"delete": "Delete",
+			"deleteConfirmDescription": "Tasks in this sprint will be released back to the backlog. This action cannot be undone.",
+			"deleteConfirmTitle": "Delete this sprint?",
+			"deleteError": "Failed to delete sprint",
+			"deleteSuccess": "Sprint deleted",
+			"edit": "Edit sprint",
+			"empty": "No sprints yet",
+			"emptySubtitle": "Create a sprint to plan a focused batch of work from your backlog.",
+			"endDate": "End date",
+			"expand": "Expand sprint",
+			"goalPlaceholder": "Goal (optional)",
+			"namePlaceholder": "Sprint name",
+			"newSprint": "New sprint",
+			"noTasks": "No tasks in this sprint yet.",
+			"noUnassignedTasks": "All project tasks are already in a sprint.",
+			"pageTitle": "{{name}} — Sprints",
+			"removeTask": "Remove from sprint",
+			"save": "Save",
+			"start": "Start",
+			"startDate": "Start date",
+			"status": {
+				"active": "Active",
+				"completed": "Completed",
+				"planned": "Planned"
+			},
+			"title": "Sprints",
+			"unassignedTasks": "Tasks not in a sprint",
+			"updateError": "Failed to update sprint",
+			"actions": "Sprint actions",
+			"filterTasksPlaceholder": "Filter tasks...",
+			"loadError": "Failed to load sprints.",
+			"noMatchingTasks": "No tasks match your search."
 		}
 	},
 	"invitations": {
@@ -1749,6 +2051,11 @@
 			"submit": "Créer un workspace",
 			"success": "Workspace créé avec succès",
 			"error": "Échec de la création du workspace"
+		},
+		"myTasks": {
+			"pageTitle": "Mes tâches",
+			"emptyTitle": "Aucune tâche ne vous est assignée",
+			"emptyDescription": "Les tâches qui vous sont assignées dans tous les projets de cet espace de travail apparaîtront ici."
 		}
 	},
 	"team": {
@@ -1773,7 +2080,8 @@
 			"emailPlaceholder": "collegue@entreprise.fr",
 			"sendInvitation": "Envoyer l'invitation",
 			"success": "Invitation envoyée avec succès",
-			"error": "Échec de l'envoi de l'invitation"
+			"error": "Échec de l'envoi de l'invitation",
+			"roleLabel": "Rôle"
 		},
 		"membersTable": {
 			"emptyTitle": "Aucun membre de l'équipe pour le moment",

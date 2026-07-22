@@ -414,7 +414,21 @@
 			"toastPreferencesSaved": "Preferensi notifikasi disimpan",
 			"toastPreferencesSaveFailed": "Gagal menyimpan preferensi notifikasi",
 			"toastRuleSavedGeneric": "Aturan notifikasi ruang kerja disimpan",
-			"toastRuleRemovedGeneric": "Aturan notifikasi ruang kerja dihapus"
+			"toastRuleRemovedGeneric": "Aturan notifikasi ruang kerja dihapus",
+			"eventComments": "Komentar dan penyebutan",
+			"eventCommentsHint": "Termasuk komentar baru pada tugas yang ditetapkan kepada Anda dan penyebutan @ langsung.",
+			"eventDueDateReminders": "Pengingat tenggat waktu",
+			"eventPreferencesDescription": "Pilih peristiwa tugas mana yang membuat notifikasi dalam aplikasi dan dapat dikirim ke saluran yang terhubung.",
+			"eventPreferencesTitle": "Beri tahu saya tentang",
+			"eventStatusChanges": "Perubahan status tugas",
+			"eventTaskAssignments": "Penugasan tugas",
+			"reminderLeadTimeHint": "Antara 1 jam hingga 30 hari sebelumnya. Notifikasi terlambat dikirim secara terpisah.",
+			"reminderLeadTimeInvalid": "Masukkan bilangan bulat antara 1 dan {{max}}.",
+			"reminderLeadTimeLabel": "Ingatkan saya sebelum tenggat waktu",
+			"reminderLeadTimeUnitDays": "Hari",
+			"reminderLeadTimeUnitHours": "Jam",
+			"saveEventPreferences": "Simpan jenis notifikasi",
+			"workspaceEnabledLabel": "Aktifkan notifikasi untuk {{workspaceName}}"
 		},
 		"preferencesPage": {
 			"title": "Preferensi",
@@ -906,11 +920,13 @@
 				"taskMoved": "Tugas dipindahkan",
 				"taskDueDateChanged": "Tenggat diubah",
 				"taskAssigneeChanged": "Penanggung jawab diubah",
-				"taskUnassigned": "Penugasan dihapus"
+				"taskUnassigned": "Penugasan dihapus",
+				"dueDateReminder": "Pengingat tenggat waktu"
 			},
 			"connect": "Hubungkan webhook",
 			"saveChanges": "Simpan perubahan",
-			"disconnect": "Putuskan"
+			"disconnect": "Putuskan",
+			"reminderLeadTimeLabel": "Kirim webhook ini berapa jam sebelumnya"
 		},
 		"telegramIntegration": {
 			"validation": {
@@ -1158,6 +1174,73 @@
 				"title": "Hapus peran",
 				"description": "Ini akan menghapus peran \"{{role}}\" secara permanen. Anggota yang memakai peran ini akan kehilangan izinnya."
 			}
+		},
+		"workspaceLabels": {
+			"cardDescription": "Kelola label yang dapat ditetapkan ke tugas.",
+			"colorLabel": "Warna",
+			"createDescription": "Buat label baru yang dapat digunakan pada tugas di ruang kerja ini.",
+			"createError": "Gagal membuat label",
+			"createLabel": "Buat Label",
+			"createSuccess": "Label dibuat",
+			"deleteConfirmDescription": "Ini akan menghapus label ini secara permanen dari semua tugas. Tindakan ini tidak dapat dibatalkan.",
+			"deleteConfirmTitle": "Hapus label ini?",
+			"deleteError": "Gagal menghapus label",
+			"deleteLabel": "Hapus",
+			"deleteSuccess": "Label dihapus",
+			"editDescription": "Perbarui nama atau warna label ini.",
+			"editLabel": "Edit Label",
+			"empty": "Belum ada label. Buat label pertama Anda untuk memulai.",
+			"nameLabel": "Nama label",
+			"namePlaceholder": "Masukkan nama label",
+			"nameRequired": "Nama label wajib diisi",
+			"pageTitle": "Pengaturan Label",
+			"saveLabel": "Simpan",
+			"subtitle": "Buat, edit, dan hapus label tingkat ruang kerja.",
+			"title": "Label",
+			"updateError": "Gagal memperbarui label",
+			"updateSuccess": "Label diperbarui"
+		},
+		"workspaceAuditLog": {
+			"columnAction": "Action",
+			"columnDetail": "Detail",
+			"columnProject": "Project",
+			"columnWhen": "When",
+			"columnWho": "Who",
+			"description": "Who did what and when across this workspace.",
+			"emptyDescription": "Changes to projects, columns and tasks will appear here.",
+			"emptyTitle": "No entries yet",
+			"next": "Next",
+			"noAccessDescription": "Only workspace admins can view the audit log.",
+			"noAccessTitle": "Admins only",
+			"pageOf": "Page {{page}} of {{pages}}",
+			"previous": "Previous",
+			"title": "Audit log",
+			"action": {
+				"archived": "archived",
+				"assignee_changed": "assignee changed",
+				"created": "created",
+				"deleted": "deleted",
+				"reordered": "reordered",
+				"status_changed": "status changed",
+				"unarchived": "unarchived",
+				"updated": "updated"
+			},
+			"entity": {
+				"column": "Column",
+				"project": "Project",
+				"task": "Task"
+			}
+		},
+		"projectWorkflowTransitions": {
+			"description": "Restrict which columns tasks can move to from each column.",
+			"hint": "Columns with no targets selected allow moving tasks to any column.",
+			"noColumns": "Create columns first to configure transitions.",
+			"resetToTemplate": "Reset to template",
+			"save": "Save transitions",
+			"title": "Workflow transitions",
+			"toastError": "Failed to save workflow transitions",
+			"toastSaved": "Workflow transitions saved",
+			"unrestricted": "Unrestricted"
 		}
 	},
 	"navigation": {
@@ -1189,7 +1272,8 @@
 			"members": "Anggota",
 			"invitations": "Undangan",
 			"more": "Lainnya",
-			"backToBoard": "Kembali ke papan"
+			"backToBoard": "Kembali ke papan",
+			"myTasks": "Tugas Saya"
 		},
 		"projectList": {
 			"viewProject": "Lihat Proyek",
@@ -1309,7 +1393,27 @@
 				"title": "Pelacakan waktu dimulai",
 				"contentWithTask": "Pelacakan waktu dimulai pada tugas: {{taskTitle}}",
 				"contentWithoutTask": "Pelacakan waktu dimulai pada sebuah tugas"
+			},
+			"due_date_reminder": {
+				"content": "{{taskTitle}} jatuh tempo dalam {{leadTime}}",
+				"title": "Tugas akan segera jatuh tempo"
+			},
+			"task_comment": {
+				"content": "Komentar baru pada {{taskTitle}}: {{commentPreview}}",
+				"title": "{{commenterName}} mengomentari tugas Anda"
+			},
+			"task_overdue": {
+				"content": "{{taskTitle}} sudah melewati tenggat waktu",
+				"title": "Tugas terlambat"
 			}
+		},
+		"reminderLeadTime": {
+			"days_one": "{{count}} hari",
+			"days_other": "{{count}} hari",
+			"hours_one": "{{count}} jam",
+			"hours_other": "{{count}} jam",
+			"minutes_one": "{{count}} menit",
+			"minutes_other": "{{count}} menit"
 		}
 	},
 	"activity": {
@@ -1803,6 +1907,67 @@
 			"searchActions": "Cari aksi...",
 			"noActionsFound": "Tidak ada aksi ditemukan.",
 			"changeStatus": "Ubah Status"
+		},
+		"epics": {
+			"addTask": "Add task",
+			"cancel": "Cancel",
+			"collapse": "Collapse epic",
+			"create": "Create",
+			"createError": "Failed to create",
+			"empty": "No epics yet",
+			"emptySubtitle": "Create an epic to group related tasks and track their progress.",
+			"epicTitlePlaceholder": "Epic title",
+			"expand": "Expand epic",
+			"newEpic": "New epic",
+			"pageTitle": "{{name}} — Epics",
+			"progress": "{{done}}/{{total}}",
+			"taskTitlePlaceholder": "Task title",
+			"title": "Epics",
+			"loadError": "Failed to load epics.",
+			"progressDone": "{{done}}/{{total}} done"
+		},
+		"sprints": {
+			"addTask": "Add to sprint",
+			"addTasks": "Add tasks",
+			"assignError": "Failed to update sprint tasks",
+			"cancel": "Cancel",
+			"collapse": "Collapse sprint",
+			"complete": "Complete",
+			"completeSuccess": "Sprint completed. {{count}} unfinished task(s) released back to the backlog.",
+			"create": "Create",
+			"createError": "Failed to create sprint",
+			"delete": "Delete",
+			"deleteConfirmDescription": "Tasks in this sprint will be released back to the backlog. This action cannot be undone.",
+			"deleteConfirmTitle": "Delete this sprint?",
+			"deleteError": "Failed to delete sprint",
+			"deleteSuccess": "Sprint deleted",
+			"edit": "Edit sprint",
+			"empty": "No sprints yet",
+			"emptySubtitle": "Create a sprint to plan a focused batch of work from your backlog.",
+			"endDate": "End date",
+			"expand": "Expand sprint",
+			"goalPlaceholder": "Goal (optional)",
+			"namePlaceholder": "Sprint name",
+			"newSprint": "New sprint",
+			"noTasks": "No tasks in this sprint yet.",
+			"noUnassignedTasks": "All project tasks are already in a sprint.",
+			"pageTitle": "{{name}} — Sprints",
+			"removeTask": "Remove from sprint",
+			"save": "Save",
+			"start": "Start",
+			"startDate": "Start date",
+			"status": {
+				"active": "Active",
+				"completed": "Completed",
+				"planned": "Planned"
+			},
+			"title": "Sprints",
+			"unassignedTasks": "Tasks not in a sprint",
+			"updateError": "Failed to update sprint",
+			"actions": "Sprint actions",
+			"filterTasksPlaceholder": "Filter tasks...",
+			"loadError": "Failed to load sprints.",
+			"noMatchingTasks": "No tasks match your search."
 		}
 	},
 	"invitations": {
@@ -1886,6 +2051,11 @@
 			"submit": "Buat ruang kerja",
 			"success": "Ruang kerja berhasil dibuat",
 			"error": "Gagal membuat ruang kerja"
+		},
+		"myTasks": {
+			"pageTitle": "Tugas Saya",
+			"emptyTitle": "Tidak ada tugas yang ditugaskan kepada Anda",
+			"emptyDescription": "Tugas yang ditugaskan kepada Anda di setiap proyek dalam ruang kerja ini akan muncul di sini."
 		}
 	},
 	"team": {
@@ -1897,7 +2067,8 @@
 		},
 		"members": {
 			"pageTitle": "Anggota",
-			"inviteMember": "Undang anggota"
+			"inviteMember": "Undang anggota",
+			"you": "Anda"
 		},
 		"inviteModal": {
 			"title": "Undang Anggota Tim",
@@ -1905,7 +2076,8 @@
 			"emailPlaceholder": "rekan@perusahaan.com",
 			"sendInvitation": "Kirim Undangan",
 			"success": "Undangan berhasil dikirim",
-			"error": "Gagal mengundang anggota tim"
+			"error": "Gagal mengundang anggota tim",
+			"roleLabel": "Peran"
 		},
 		"membersTable": {
 			"emptyTitle": "Belum ada anggota tim",
@@ -1931,6 +2103,10 @@
 			"cancelInviteError": "Gagal membatalkan undangan",
 			"roleUpdateSuccess": "Peran diperbarui",
 			"roleUpdateError": "Gagal memperbarui peran"
+		},
+		"invitations": {
+			"expires": "Berakhir {{date}}",
+			"pendingBadge": "tertunda"
 		}
 	},
 	"publicProject": {

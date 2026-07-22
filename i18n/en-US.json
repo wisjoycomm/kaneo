@@ -726,6 +726,37 @@
 			"deleteError": "Failed to delete label",
 			"nameRequired": "Label name is required"
 		},
+		"workspaceAuditLog": {
+			"title": "Audit log",
+			"description": "Who did what and when across this workspace.",
+			"noAccessTitle": "Admins only",
+			"noAccessDescription": "Only workspace admins can view the audit log.",
+			"emptyTitle": "No entries yet",
+			"emptyDescription": "Changes to projects, columns and tasks will appear here.",
+			"columnWhen": "When",
+			"columnWho": "Who",
+			"columnAction": "Action",
+			"columnProject": "Project",
+			"columnDetail": "Detail",
+			"pageOf": "Page {{page}} of {{pages}}",
+			"previous": "Previous",
+			"next": "Next",
+			"entity": {
+				"task": "Task",
+				"project": "Project",
+				"column": "Column"
+			},
+			"action": {
+				"created": "created",
+				"updated": "updated",
+				"deleted": "deleted",
+				"status_changed": "status changed",
+				"assignee_changed": "assignee changed",
+				"archived": "archived",
+				"unarchived": "unarchived",
+				"reordered": "reordered"
+			}
+		},
 		"projectGeneral": {
 			"pageTitle": "Project Settings",
 			"title": "General Settings",
@@ -807,6 +838,17 @@
 			"columnsDescription": "Manage the columns that appear on your board. Drag to reorder. Turn on \"Done column\" for stages that represent completed work.",
 			"automationTitle": "Automation Rules",
 			"automationDescription": "Map integration events to columns. When an event occurs, the linked task moves to the specified column."
+		},
+		"projectWorkflowTransitions": {
+			"title": "Workflow transitions",
+			"description": "Restrict which columns tasks can move to from each column.",
+			"noColumns": "Create columns first to configure transitions.",
+			"unrestricted": "Unrestricted",
+			"hint": "Columns with no targets selected allow moving tasks to any column.",
+			"save": "Save transitions",
+			"resetToTemplate": "Reset to template",
+			"toastSaved": "Workflow transitions saved",
+			"toastError": "Failed to save workflow transitions"
 		},
 		"projectSwitcher": {
 			"selectProject": "Select project",
@@ -1227,6 +1269,7 @@
 		"sidebar": {
 			"overview": "Overview",
 			"projects": "Projects",
+			"myTasks": "My Tasks",
 			"members": "Members",
 			"invitations": "Invitations",
 			"more": "More",
@@ -1778,6 +1821,67 @@
 			"resizeDue": "Resize due date",
 			"taskAriaLabel": "{{title}} — open or drag to move"
 		},
+		"epics": {
+			"title": "Epics",
+			"pageTitle": "{{name}} — Epics",
+			"newEpic": "New epic",
+			"epicTitlePlaceholder": "Epic title",
+			"taskTitlePlaceholder": "Task title",
+			"addTask": "Add task",
+			"create": "Create",
+			"cancel": "Cancel",
+			"expand": "Expand epic",
+			"collapse": "Collapse epic",
+			"empty": "No epics yet",
+			"emptySubtitle": "Create an epic to group related tasks and track their progress.",
+			"progress": "{{done}}/{{total}}",
+			"progressDone": "{{done}}/{{total}} done",
+			"createError": "Failed to create",
+			"loadError": "Failed to load epics."
+		},
+		"sprints": {
+			"title": "Sprints",
+			"pageTitle": "{{name}} — Sprints",
+			"newSprint": "New sprint",
+			"namePlaceholder": "Sprint name",
+			"goalPlaceholder": "Goal (optional)",
+			"startDate": "Start date",
+			"endDate": "End date",
+			"create": "Create",
+			"cancel": "Cancel",
+			"save": "Save",
+			"start": "Start",
+			"complete": "Complete",
+			"edit": "Edit sprint",
+			"delete": "Delete",
+			"expand": "Expand sprint",
+			"collapse": "Collapse sprint",
+			"empty": "No sprints yet",
+			"emptySubtitle": "Create a sprint to plan a focused batch of work from your backlog.",
+			"status": {
+				"planned": "Planned",
+				"active": "Active",
+				"completed": "Completed"
+			},
+			"noTasks": "No tasks in this sprint yet.",
+			"addTasks": "Add tasks",
+			"addTask": "Add to sprint",
+			"removeTask": "Remove from sprint",
+			"unassignedTasks": "Tasks not in a sprint",
+			"noUnassignedTasks": "All project tasks are already in a sprint.",
+			"completeSuccess": "Sprint completed. {{count}} unfinished task(s) released back to the backlog.",
+			"deleteConfirmTitle": "Delete this sprint?",
+			"deleteConfirmDescription": "Tasks in this sprint will be released back to the backlog. This action cannot be undone.",
+			"deleteSuccess": "Sprint deleted",
+			"createError": "Failed to create sprint",
+			"updateError": "Failed to update sprint",
+			"deleteError": "Failed to delete sprint",
+			"assignError": "Failed to update sprint tasks",
+			"loadError": "Failed to load sprints.",
+			"actions": "Sprint actions",
+			"filterTasksPlaceholder": "Filter tasks...",
+			"noMatchingTasks": "No tasks match your search."
+		},
 		"delete": {
 			"title": "Delete Task?",
 			"description": "This will permanently remove the task and all its data. You can't undo this action.",
@@ -1934,6 +2038,11 @@
 			"suggestionInProgress": "In progress",
 			"suggestionCompleted": "Completed"
 		},
+		"myTasks": {
+			"pageTitle": "My Tasks",
+			"emptyTitle": "No tasks assigned to you",
+			"emptyDescription": "Tasks assigned to you across every project in this workspace will show up here."
+		},
 		"create": {
 			"pageTitle": "Create Workspace",
 			"heading": "Create a new workspace",
@@ -1969,6 +2078,7 @@
 			"title": "Invite Team Member",
 			"emailLabel": "Email",
 			"emailPlaceholder": "colleague@company.com",
+			"roleLabel": "Role",
 			"sendInvitation": "Send Invitation",
 			"success": "Invitation sent successfully",
 			"error": "Failed to invite team member"

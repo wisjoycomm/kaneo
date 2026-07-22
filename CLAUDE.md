@@ -69,12 +69,16 @@ kaneo/
 ├── apps/
 │   ├── api/          # Backend API (Hono/Node.js/PostgreSQL)
 │   ├── web/          # Frontend app (React/Vite/TanStack)
-│   └── docs/         # Documentation site (Next.js)
+│   ├── site/         # Marketing site (Next.js, port 3001)
+│   └── docs/         # Docs site (Mintlify, apps/docs/*.mdx)
 ├── packages/
-│   ├── email/        # Email utilities
+│   ├── email/        # React Email templates + preview server
 │   ├── libs/         # Shared libraries
+│   ├── mcp/          # MCP server package (exposes Kaneo as AI-agent tools)
+│   ├── permissions/  # Shared RBAC/permission logic
 │   └── typescript-config/  # TypeScript configurations
-└── charts/           # Kubernetes Helm charts
+├── i18n/             # Locale JSON files (one per locale, e.g. en-US.json) + resources.ts
+└── charts/           # Kubernetes Helm charts (charts/kaneo/)
 ```
 
 ### Technology Stack
@@ -131,6 +135,14 @@ kaneo/
 - Use `publishEvent()` from `apps/api/src/events/`
 - Events tracked for features like status changes, assignments, etc.
 
+**Internationalization (i18n)**
+- Locale resource files live at repo root in `i18n/*.json` (one file per locale, e.g. `en-US.json`), keyed by namespace (`common`, `auth`, `settings`, `navigation`, `notifications`, `activity`, `tasks`, `invitations`, `workspace`, `team`, `publicProject`)
+- `i18n/resources.ts` is the single source of truth for `supportedLocales`/`resources` — adding a locale means adding it there, not just dropping a JSON file
+- `en-US.json` is the reference locale; every other locale must have identical keys
+- `pnpm i18n:check [locale]` — verify a locale's keys match `en-US`; `pnpm i18n:check:fix` — fill missing keys from `en-US` as placeholders
+- `pnpm i18n:report` / `pnpm i18n:schema` — additional i18n tooling scripts (`scripts/i18n/`)
+- Frontend consumes via `apps/web/src/lib/i18n` (`react-i18next`), locale resolution in `apps/web/src/hooks/use-locale.ts`
+
 ## Code Style
 
 ### Formatting (Biome)
@@ -160,7 +172,7 @@ Use Conventional Commits:
 - `refactor:` - Code refactoring
 - `chore:` - Maintenance tasks
 
-Husky enforces commit message format via commitlint.
+Husky enforces commit message format via commitlint. Branch names follow the same prefixes (`feat/...`, `fix/...`, `docs/...`, `refactor/...`, `chore/...`).
 
 ### Pre-commit Hooks
 The pre-commit hook (`.husky/pre-commit`) runs two checks:
@@ -231,7 +243,15 @@ See `ENVIRONMENT_SETUP.md` for detailed configuration and troubleshooting.
 - **Hot Reload**: Both API and web have watch mode via `pnpm dev`
 - **CORS**: Configured in API index.ts, controlled by `CORS_ORIGINS` env var
 - **Testing**: Run `pnpm test` at the repo root (Turbo runs `test` in packages that define it: API unit tests, web unit/component tests, shared packages). API integration tests: `pnpm test:integration` (requires PostgreSQL; env is set in `tests/api-integration/setup.ts`; CI uses `.github/workflows/ci.yml`). Vitest configs: `apps/api/vitest.config.ts` (unit), `apps/api/vitest.integration.config.ts` (integration), `apps/web/vitest.config.ts` (web). Integration tests live under `tests/api-integration/`; API unit tests under `tests/api/`.
+- **Single test file**: `pnpm --filter @kaneo/api exec vitest run tests/api/<path>.test.ts` (API) or `pnpm --filter @kaneo/web exec vitest run <path/to/file>.test.tsx` (web) — vitest also accepts `-t "<test name>"` to filter by test name.
+- **Other API test scripts**: `pnpm --filter @kaneo/api test:coverage`, `pnpm --filter @kaneo/api test:watch`.
+- **Web typecheck**: `pnpm --filter @kaneo/web typecheck` (`tsc --noEmit`).
 - **Security**: Never commit secrets, always validate inputs, sanitize outputs
+
+## Deployment
+
+- **Docker Compose**: `compose.yml` at repo root defines `postgres`, `api`, `web` services using published images `ghcr.io/usekaneo/api:latest` and `ghcr.io/usekaneo/web:latest`. `api` depends on `postgres` via `condition: service_healthy` (healthcheck: `pg_isready -U kaneo -d kaneo`).
+- **Kubernetes**: Helm chart at `charts/kaneo/` (`Chart.yaml`, `values.yaml`, `templates/` for deployment/service/ingress/postgresql/pvc/hpa/serviceaccount).
 
 ## Common Patterns
 

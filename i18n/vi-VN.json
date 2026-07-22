@@ -1199,6 +1199,48 @@
 			"merged": "Đã merge",
 			"draft": "Bản nháp",
 			"open": "Đang mở"
+		},
+		"workspaceAuditLog": {
+			"columnAction": "Action",
+			"columnDetail": "Detail",
+			"columnProject": "Project",
+			"columnWhen": "When",
+			"columnWho": "Who",
+			"description": "Who did what and when across this workspace.",
+			"emptyDescription": "Changes to projects, columns and tasks will appear here.",
+			"emptyTitle": "No entries yet",
+			"next": "Next",
+			"noAccessDescription": "Only workspace admins can view the audit log.",
+			"noAccessTitle": "Admins only",
+			"pageOf": "Page {{page}} of {{pages}}",
+			"previous": "Previous",
+			"title": "Audit log",
+			"action": {
+				"archived": "archived",
+				"assignee_changed": "assignee changed",
+				"created": "created",
+				"deleted": "deleted",
+				"reordered": "reordered",
+				"status_changed": "status changed",
+				"unarchived": "unarchived",
+				"updated": "updated"
+			},
+			"entity": {
+				"column": "Column",
+				"project": "Project",
+				"task": "Task"
+			}
+		},
+		"projectWorkflowTransitions": {
+			"description": "Restrict which columns tasks can move to from each column.",
+			"hint": "Columns with no targets selected allow moving tasks to any column.",
+			"noColumns": "Create columns first to configure transitions.",
+			"resetToTemplate": "Reset to template",
+			"save": "Save transitions",
+			"title": "Workflow transitions",
+			"toastError": "Failed to save workflow transitions",
+			"toastSaved": "Workflow transitions saved",
+			"unrestricted": "Unrestricted"
 		}
 	},
 	"navigation": {
@@ -1230,7 +1272,8 @@
 			"members": "Thành viên",
 			"invitations": "Lời mời",
 			"more": "Thêm",
-			"backToBoard": "Quay lại bảng"
+			"backToBoard": "Quay lại bảng",
+			"myTasks": "Công việc của tôi"
 		},
 		"projectList": {
 			"viewProject": "Xem dự án",
@@ -1864,6 +1907,67 @@
 			"searchActions": "Tìm hành động...",
 			"noActionsFound": "Không tìm thấy hành động nào.",
 			"changeStatus": "Đổi trạng thái"
+		},
+		"epics": {
+			"addTask": "Add task",
+			"cancel": "Cancel",
+			"collapse": "Collapse epic",
+			"create": "Create",
+			"createError": "Failed to create",
+			"empty": "No epics yet",
+			"emptySubtitle": "Create an epic to group related tasks and track their progress.",
+			"epicTitlePlaceholder": "Epic title",
+			"expand": "Expand epic",
+			"newEpic": "New epic",
+			"pageTitle": "{{name}} — Epics",
+			"progress": "{{done}}/{{total}}",
+			"taskTitlePlaceholder": "Task title",
+			"title": "Epics",
+			"loadError": "Failed to load epics.",
+			"progressDone": "{{done}}/{{total}} done"
+		},
+		"sprints": {
+			"addTask": "Add to sprint",
+			"addTasks": "Add tasks",
+			"assignError": "Failed to update sprint tasks",
+			"cancel": "Cancel",
+			"collapse": "Collapse sprint",
+			"complete": "Complete",
+			"completeSuccess": "Sprint completed. {{count}} unfinished task(s) released back to the backlog.",
+			"create": "Create",
+			"createError": "Failed to create sprint",
+			"delete": "Delete",
+			"deleteConfirmDescription": "Tasks in this sprint will be released back to the backlog. This action cannot be undone.",
+			"deleteConfirmTitle": "Delete this sprint?",
+			"deleteError": "Failed to delete sprint",
+			"deleteSuccess": "Sprint deleted",
+			"edit": "Edit sprint",
+			"empty": "No sprints yet",
+			"emptySubtitle": "Create a sprint to plan a focused batch of work from your backlog.",
+			"endDate": "End date",
+			"expand": "Expand sprint",
+			"goalPlaceholder": "Goal (optional)",
+			"namePlaceholder": "Sprint name",
+			"newSprint": "New sprint",
+			"noTasks": "No tasks in this sprint yet.",
+			"noUnassignedTasks": "All project tasks are already in a sprint.",
+			"pageTitle": "{{name}} — Sprints",
+			"removeTask": "Remove from sprint",
+			"save": "Save",
+			"start": "Start",
+			"startDate": "Start date",
+			"status": {
+				"active": "Active",
+				"completed": "Completed",
+				"planned": "Planned"
+			},
+			"title": "Sprints",
+			"unassignedTasks": "Tasks not in a sprint",
+			"updateError": "Failed to update sprint",
+			"actions": "Sprint actions",
+			"filterTasksPlaceholder": "Filter tasks...",
+			"loadError": "Failed to load sprints.",
+			"noMatchingTasks": "No tasks match your search."
 		}
 	},
 	"invitations": {
@@ -1947,6 +2051,11 @@
 			"submit": "Tạo workspace",
 			"success": "Tạo workspace thành công",
 			"error": "Tạo workspace thất bại"
+		},
+		"myTasks": {
+			"pageTitle": "Công việc của tôi",
+			"emptyTitle": "Không có công việc nào được giao cho bạn",
+			"emptyDescription": "Các công việc được giao cho bạn trong mọi dự án của không gian làm việc này sẽ hiển thị ở đây."
 		}
 	},
 	"team": {
@@ -1971,7 +2080,8 @@
 			"emailPlaceholder": "colleague@company.com",
 			"sendInvitation": "Gửi lời mời",
 			"success": "Đã gửi lời mời",
-			"error": "Mời thành viên nhóm thất bại"
+			"error": "Mời thành viên nhóm thất bại",
+			"roleLabel": "Vai trò"
 		},
 		"membersTable": {
 			"emptyTitle": "Chưa có thành viên nào",

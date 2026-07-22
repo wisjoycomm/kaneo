@@ -47,6 +47,7 @@ import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { cn } from "@/lib/cn";
 import { formatDateMedium } from "@/lib/format";
 import { getInitials } from "@/lib/get-initials";
+import { getStatusDisplayLabel } from "@/lib/i18n/domain";
 import { getPriorityIcon } from "@/lib/priority";
 import { toast } from "@/lib/toast";
 import useProjectStore from "@/store/project";
@@ -466,11 +467,12 @@ function CreateTaskModal({
   const selectedPriority = priorityOptions.find((p) => p.value === priority);
 
   const statusLabel = useMemo(() => {
-    if (status) {
-      return t(`tasks:status.${status}`);
-    }
-    return t("tasks:status.in-progress");
-  }, [status, t]);
+    const resolvedStatus = status ?? "in-progress";
+    const columnName = project?.columns?.find(
+      (column) => column.id === resolvedStatus,
+    )?.name;
+    return getStatusDisplayLabel(resolvedStatus, columnName);
+  }, [status, project?.columns]);
   const selectedUser = workspaceUsers?.members?.find(
     (u) => u.userId === assigneeId,
   );

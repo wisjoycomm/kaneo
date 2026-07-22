@@ -153,7 +153,8 @@
 			"discordError": "Discord ile giriş yapılamadı",
 			"errors": {
 				"oauth_code_verification_failed": "OAuth doğrulaması başarısız. Lütfen tekrar deneyin.",
-				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "Kayıt şu anda devre dışı. Hesap oluşturmak için geçerli bir davet gereklidir."
+				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "Kayıt şu anda devre dışı. Hesap oluşturmak için geçerli bir davet gereklidir.",
+				"account_not_linked": "Bu kimlik mevcut hesaba bağlanamadı. Hesabı doğrulamak için e-posta ile giriş yapın, ardından SSO'yu tekrar deneyin. E-posta ile giriş kullanılamıyorsa yöneticinizle iletişime geçin."
 			}
 		},
 		"providers": {
@@ -413,7 +414,21 @@
 			"toastPreferencesSaved": "Bildirim tercihleri kaydedildi",
 			"toastPreferencesSaveFailed": "Bildirim tercihleri kaydedilemedi",
 			"toastRuleSavedGeneric": "Çalışma alanı bildirim kuralı kaydedildi",
-			"toastRuleRemovedGeneric": "Çalışma alanı bildirim kuralı kaldırıldı"
+			"toastRuleRemovedGeneric": "Çalışma alanı bildirim kuralı kaldırıldı",
+			"eventComments": "Yorumlar ve bahsetmeler",
+			"eventCommentsHint": "Size atanan görevlere yapılan yeni yorumları ve doğrudan @ bahsetmelerini içerir.",
+			"eventDueDateReminders": "Son tarih hatırlatmaları",
+			"eventPreferencesDescription": "Hangi görev olaylarının uygulama içi bildirim oluşturacağını ve bağlı kanallarınıza iletilebileceğini seçin.",
+			"eventPreferencesTitle": "Şunlar hakkında bana bildirim gönder",
+			"eventStatusChanges": "Görev durumu değişiklikleri",
+			"eventTaskAssignments": "Görev atamaları",
+			"reminderLeadTimeHint": "1 saat ile 30 gün öncesi arasında. Gecikmiş bildirimler ayrıca gönderilir.",
+			"reminderLeadTimeInvalid": "1 ile {{max}} arasında bir tam sayı girin.",
+			"reminderLeadTimeLabel": "Son tarihten önce bana hatırlat",
+			"reminderLeadTimeUnitDays": "Gün",
+			"reminderLeadTimeUnitHours": "Saat",
+			"saveEventPreferences": "Bildirim türlerini kaydet",
+			"workspaceEnabledLabel": "{{workspaceName}} için bildirimleri etkinleştir"
 		},
 		"preferencesPage": {
 			"title": "Tercihler",
@@ -905,11 +920,13 @@
 				"taskMoved": "Talep taşındı",
 				"taskDueDateChanged": "Bitiş tarihi değişti",
 				"taskAssigneeChanged": "Atanan kişi değişti",
-				"taskUnassigned": "Atama kaldırıldı"
+				"taskUnassigned": "Atama kaldırıldı",
+				"dueDateReminder": "Son tarih hatırlatmaları"
 			},
 			"connect": "Webhook bağla",
 			"saveChanges": "Değişiklikleri kaydet",
-			"disconnect": "Bağlantıyı kes"
+			"disconnect": "Bağlantıyı kes",
+			"reminderLeadTimeLabel": "Webhook'u bu kadar saat önceden gönder"
 		},
 		"telegramIntegration": {
 			"validation": {
@@ -1020,6 +1037,210 @@
 			"merged": "Birleştirildi",
 			"draft": "Taslak",
 			"open": "Açık"
+		},
+		"workspaceLabels": {
+			"cardDescription": "Görevlere atanabilecek etiketleri yönetin.",
+			"colorLabel": "Renk",
+			"createDescription": "Bu çalışma alanındaki görevlerde kullanılabilecek yeni bir etiket oluşturun.",
+			"createError": "Etiket oluşturulamadı",
+			"createLabel": "Etiket Oluştur",
+			"createSuccess": "Etiket oluşturuldu",
+			"deleteConfirmDescription": "Bu, etiketi tüm görevlerden kalıcı olarak kaldıracaktır. Bu işlem geri alınamaz.",
+			"deleteConfirmTitle": "Bu etiket silinsin mi?",
+			"deleteError": "Etiket silinemedi",
+			"deleteLabel": "Sil",
+			"deleteSuccess": "Etiket silindi",
+			"editDescription": "Bu etiketin adını veya rengini güncelleyin.",
+			"editLabel": "Etiketi Düzenle",
+			"empty": "Henüz etiket yok. Başlamak için ilk etiketinizi oluşturun.",
+			"nameLabel": "Etiket adı",
+			"namePlaceholder": "Etiket adını girin",
+			"nameRequired": "Etiket adı gereklidir",
+			"pageTitle": "Etiket Ayarları",
+			"saveLabel": "Kaydet",
+			"subtitle": "Çalışma alanı düzeyindeki etiketleri oluşturun, düzenleyin ve silin.",
+			"title": "Etiketler",
+			"updateError": "Etiket güncellenemedi",
+			"updateSuccess": "Etiket güncellendi"
+		},
+		"workspaceRoles": {
+			"allChangesSaved": "Tüm değişiklikler kaydedildi",
+			"createRole": "Rol oluştur",
+			"defaultBadge": "Varsayılan",
+			"defaultRoleDescriptions": {
+				"admin": "Çalışma alanına tam erişime sahiptir.",
+				"member": "Görevleri ve projeleri oluşturabilir ve yönetebilir.",
+				"viewer": "Görevleri görüntüleyebilir ve yorumlayabilir."
+			},
+			"defaultRoleHelp": "Varsayılan rol — ad ayrılmıştır ve satır silinemez.",
+			"deleteDialog": {
+				"description": "Bu, \"{{role}}\" rolünü kalıcı olarak silecektir. Bu role sahip üyeler bu rolün izinlerini kaybedecektir.",
+				"title": "Rolü sil"
+			},
+			"deleteRole": "Rolü sil",
+			"discard": "Vazgeç",
+			"emptyDescription": "Varsayılan roller bu çalışma alanı için oluşturulduktan sonra burada görünecektir.",
+			"emptyTitle": "Henüz rol yok",
+			"loadError": "Roller yüklenemedi.",
+			"loading": "Yükleniyor…",
+			"nameHint": "Küçük harf. Daha sonra değiştirilemez.",
+			"nameLabel": "Ad",
+			"namePlaceholder": "örn. inceleyen",
+			"newRole": "Yeni rol",
+			"noAccess": "Çalışma alanı rollerini yönetmek için yönetici veya sahip izinlerine ihtiyacınız var.",
+			"pageTitle": "Roller",
+			"permissionCount_one": "{{count}} izin",
+			"permissionCount_other": "{{count}} izin",
+			"permissions": {
+				"label": {
+					"create": {
+						"description": "Etiket oluşturabilir",
+						"label": "Oluştur"
+					},
+					"delete": {
+						"description": "Etiket silebilir",
+						"label": "Sil"
+					},
+					"read": {
+						"description": "Etiketleri görüntüleyebilir",
+						"label": "Oku"
+					},
+					"update": {
+						"description": "Etiketleri düzenleyebilir",
+						"label": "Güncelle"
+					}
+				},
+				"project": {
+					"create": {
+						"description": "Yeni proje oluşturabilir",
+						"label": "Oluştur"
+					},
+					"delete": {
+						"description": "Proje silebilir",
+						"label": "Sil"
+					},
+					"read": {
+						"description": "Projeleri görüntüleyebilir",
+						"label": "Oku"
+					},
+					"share": {
+						"description": "Projeleri paylaşabilir",
+						"label": "Paylaş"
+					},
+					"update": {
+						"description": "Proje ayarlarını düzenleyebilir",
+						"label": "Güncelle"
+					}
+				},
+				"task": {
+					"assign": {
+						"description": "Görevleri üyelere atayabilir",
+						"label": "Ata"
+					},
+					"create": {
+						"description": "Görev oluşturabilir",
+						"label": "Oluştur"
+					},
+					"delete": {
+						"description": "Görev silebilir",
+						"label": "Sil"
+					},
+					"read": {
+						"description": "Görevleri görüntüleyebilir",
+						"label": "Oku"
+					},
+					"update": {
+						"description": "Görevleri düzenleyebilir",
+						"label": "Güncelle"
+					}
+				},
+				"workspace": {
+					"delete": {
+						"description": "Çalışma alanını silebilir",
+						"label": "Sil"
+					},
+					"manage_settings": {
+						"description": "Çalışma alanı ayarlarını yönetebilir",
+						"label": "Ayarları Yönet"
+					},
+					"read": {
+						"description": "Çalışma alanı ayarlarını görüntüleyebilir",
+						"label": "Oku"
+					},
+					"update": {
+						"description": "Çalışma alanı ayarlarını güncelleyebilir",
+						"label": "Güncelle"
+					}
+				}
+			},
+			"resources": {
+				"label": "Etiketler",
+				"project": "Projeler",
+				"task": "Görevler",
+				"workspace": "Çalışma Alanı"
+			},
+			"saveChanges": "Değişiklikleri kaydet",
+			"sectionSubtitle": "Varsayılan rolleri düzenleyin veya özel bir rol ekleyin. Üyeler düzenlemeler boyunca atanan rol adlarını korur.",
+			"sectionTitle": "Çalışma alanı rolleri",
+			"subtitle": "{{workspaceName}} içinde üyelerin gerçekleştirebileceği eylemleri tanımlayın.",
+			"thisWorkspace": "bu çalışma alanı",
+			"title": "Roller",
+			"toast": {
+				"created": "Rol oluşturuldu",
+				"createError": "Rol oluşturulamadı",
+				"deleted": "Rol silindi",
+				"deleteError": "Rol silinemedi",
+				"updated": "Rol güncellendi",
+				"updateError": "Rol güncellenemedi"
+			},
+			"unsavedChanges": "Kaydedilmemiş değişiklikleriniz var",
+			"validation": {
+				"nameExists": "Bu adla bir rol zaten mevcut",
+				"nameRequired": "Rol adı gereklidir",
+				"permissionRequired": "En az bir izin seçilmelidir"
+			}
+		},
+		"workspaceAuditLog": {
+			"columnAction": "Action",
+			"columnDetail": "Detail",
+			"columnProject": "Project",
+			"columnWhen": "When",
+			"columnWho": "Who",
+			"description": "Who did what and when across this workspace.",
+			"emptyDescription": "Changes to projects, columns and tasks will appear here.",
+			"emptyTitle": "No entries yet",
+			"next": "Next",
+			"noAccessDescription": "Only workspace admins can view the audit log.",
+			"noAccessTitle": "Admins only",
+			"pageOf": "Page {{page}} of {{pages}}",
+			"previous": "Previous",
+			"title": "Audit log",
+			"action": {
+				"archived": "archived",
+				"assignee_changed": "assignee changed",
+				"created": "created",
+				"deleted": "deleted",
+				"reordered": "reordered",
+				"status_changed": "status changed",
+				"unarchived": "unarchived",
+				"updated": "updated"
+			},
+			"entity": {
+				"column": "Column",
+				"project": "Project",
+				"task": "Task"
+			}
+		},
+		"projectWorkflowTransitions": {
+			"description": "Restrict which columns tasks can move to from each column.",
+			"hint": "Columns with no targets selected allow moving tasks to any column.",
+			"noColumns": "Create columns first to configure transitions.",
+			"resetToTemplate": "Reset to template",
+			"save": "Save transitions",
+			"title": "Workflow transitions",
+			"toastError": "Failed to save workflow transitions",
+			"toastSaved": "Workflow transitions saved",
+			"unrestricted": "Unrestricted"
 		}
 	},
 	"navigation": {
@@ -1051,7 +1272,8 @@
 			"members": "Üyeler",
 			"invitations": "Davetler",
 			"more": "Daha fazla",
-			"backToBoard": "Panoya dön"
+			"backToBoard": "Panoya dön",
+			"myTasks": "Görevlerim"
 		},
 		"projectList": {
 			"viewProject": "Projeyi Görüntüle",
@@ -1171,7 +1393,27 @@
 				"title": "Zaman takibi başlatıldı",
 				"contentWithTask": "Şu talepte zaman takibi başlatıldı: {{taskTitle}}",
 				"contentWithoutTask": "Bir talepte zaman takibi başlatıldı"
+			},
+			"due_date_reminder": {
+				"content": "{{taskTitle}} son tarihi {{leadTime}} içinde doluyor",
+				"title": "Görevin son tarihi yaklaşıyor"
+			},
+			"task_comment": {
+				"content": "{{taskTitle}} üzerine yeni yorum: {{commentPreview}}",
+				"title": "{{commenterName}} görevinize yorum yaptı"
+			},
+			"task_overdue": {
+				"content": "{{taskTitle}} son tarihini geçti",
+				"title": "Görev gecikti"
 			}
+		},
+		"reminderLeadTime": {
+			"days_one": "{{count}} gün",
+			"days_other": "{{count}} gün",
+			"hours_one": "{{count}} saat",
+			"hours_other": "{{count}} saat",
+			"minutes_one": "{{count}} dakika",
+			"minutes_other": "{{count}} dakika"
 		}
 	},
 	"activity": {
@@ -1665,6 +1907,67 @@
 			"searchActions": "İşlem ara...",
 			"noActionsFound": "İşlem bulunamadı.",
 			"changeStatus": "Durumu Değiştir"
+		},
+		"epics": {
+			"addTask": "Add task",
+			"cancel": "Cancel",
+			"collapse": "Collapse epic",
+			"create": "Create",
+			"createError": "Failed to create",
+			"empty": "No epics yet",
+			"emptySubtitle": "Create an epic to group related tasks and track their progress.",
+			"epicTitlePlaceholder": "Epic title",
+			"expand": "Expand epic",
+			"newEpic": "New epic",
+			"pageTitle": "{{name}} — Epics",
+			"progress": "{{done}}/{{total}}",
+			"taskTitlePlaceholder": "Task title",
+			"title": "Epics",
+			"loadError": "Failed to load epics.",
+			"progressDone": "{{done}}/{{total}} done"
+		},
+		"sprints": {
+			"addTask": "Add to sprint",
+			"addTasks": "Add tasks",
+			"assignError": "Failed to update sprint tasks",
+			"cancel": "Cancel",
+			"collapse": "Collapse sprint",
+			"complete": "Complete",
+			"completeSuccess": "Sprint completed. {{count}} unfinished task(s) released back to the backlog.",
+			"create": "Create",
+			"createError": "Failed to create sprint",
+			"delete": "Delete",
+			"deleteConfirmDescription": "Tasks in this sprint will be released back to the backlog. This action cannot be undone.",
+			"deleteConfirmTitle": "Delete this sprint?",
+			"deleteError": "Failed to delete sprint",
+			"deleteSuccess": "Sprint deleted",
+			"edit": "Edit sprint",
+			"empty": "No sprints yet",
+			"emptySubtitle": "Create a sprint to plan a focused batch of work from your backlog.",
+			"endDate": "End date",
+			"expand": "Expand sprint",
+			"goalPlaceholder": "Goal (optional)",
+			"namePlaceholder": "Sprint name",
+			"newSprint": "New sprint",
+			"noTasks": "No tasks in this sprint yet.",
+			"noUnassignedTasks": "All project tasks are already in a sprint.",
+			"pageTitle": "{{name}} — Sprints",
+			"removeTask": "Remove from sprint",
+			"save": "Save",
+			"start": "Start",
+			"startDate": "Start date",
+			"status": {
+				"active": "Active",
+				"completed": "Completed",
+				"planned": "Planned"
+			},
+			"title": "Sprints",
+			"unassignedTasks": "Tasks not in a sprint",
+			"updateError": "Failed to update sprint",
+			"actions": "Sprint actions",
+			"filterTasksPlaceholder": "Filter tasks...",
+			"loadError": "Failed to load sprints.",
+			"noMatchingTasks": "No tasks match your search."
 		}
 	},
 	"invitations": {
@@ -1685,6 +1988,16 @@
 			"acceptSuccess": "Davet kabul edildi! Aramıza hoş geldiniz.",
 			"rejectError": "Davet reddedilemedi",
 			"rejectSuccess": "Davet reddedildi"
+		},
+		"email": {
+			"cta": "Daveti kabul et",
+			"footer": "Kaneo çalışma alanı daveti",
+			"ignore": "Bu beklenmiyorsa bu e-postayı güvenle yok sayabilirsiniz.",
+			"preview": "Kaneo'da {{workspaceName}} çalışma alanına davetlisiniz",
+			"sameEmail": "Bu mesajı alan e-posta ile kabul edebilirsiniz.",
+			"subject": "{{inviterName}} sizi Kaneo'da {{workspaceName}} çalışma alanına katılmaya davet etti",
+			"subtitle": "{{inviterName}} ({{inviterEmail}}) sizi Kaneo'da iş birliği yapmaya davet etti.",
+			"title": "{{workspaceName}} çalışma alanına katıl"
 		}
 	},
 	"workspace": {
@@ -1738,6 +2051,11 @@
 			"submit": "Çalışma alanı oluştur",
 			"success": "Çalışma alanı başarıyla oluşturuldu",
 			"error": "Çalışma alanı oluşturulamadı"
+		},
+		"myTasks": {
+			"pageTitle": "Görevlerim",
+			"emptyTitle": "Size atanmış görev yok",
+			"emptyDescription": "Bu çalışma alanındaki her projede size atanan görevler burada görünecektir."
 		}
 	},
 	"team": {
@@ -1749,7 +2067,8 @@
 		},
 		"members": {
 			"pageTitle": "Üyeler",
-			"inviteMember": "Üye davet et"
+			"inviteMember": "Üye davet et",
+			"you": "Siz"
 		},
 		"inviteModal": {
 			"title": "Ekip Üyesi Davet Et",
@@ -1757,7 +2076,8 @@
 			"emailPlaceholder": "arkadas@sirket.com",
 			"sendInvitation": "Davet Gönder",
 			"success": "Davet başarıyla gönderildi",
-			"error": "Ekip üyesi davet edilemedi"
+			"error": "Ekip üyesi davet edilemedi",
+			"roleLabel": "Rol"
 		},
 		"membersTable": {
 			"emptyTitle": "Henüz ekip üyesi yok",
@@ -1783,6 +2103,10 @@
 			"cancelInviteError": "Davet iptal edilemedi",
 			"roleUpdateSuccess": "Rol güncellendi",
 			"roleUpdateError": "Rol güncellenemedi"
+		},
+		"invitations": {
+			"expires": "{{date}} tarihinde sona erer",
+			"pendingBadge": "beklemede"
 		}
 	},
 	"publicProject": {

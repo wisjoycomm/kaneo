@@ -152,7 +152,9 @@
 			"githubError": "Anmeldung mit GitHub fehlgeschlagen",
 			"discordError": "Anmeldung mit Discord fehlgeschlagen",
 			"errors": {
-				"account_not_linked": "This identity could not be linked to the existing account. Sign in by email to verify the account, then try SSO again. If email sign-in is unavailable, contact your administrator."
+				"account_not_linked": "This identity could not be linked to the existing account. Sign in by email to verify the account, then try SSO again. If email sign-in is unavailable, contact your administrator.",
+				"oauth_code_verification_failed": "OAuth-Verifizierung fehlgeschlagen. Bitte versuche es erneut.",
+				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "Die Registrierung ist derzeit deaktiviert. Du benötigst eine gültige Einladung, um ein Konto zu erstellen."
 			}
 		},
 		"providers": {
@@ -1035,6 +1037,210 @@
 			"merged": "Zusammengeführt",
 			"draft": "Entwurf",
 			"open": "Offen"
+		},
+		"workspaceLabels": {
+			"cardDescription": "Verwalte Labels, die Aufgaben zugewiesen werden können.",
+			"colorLabel": "Farbe",
+			"createDescription": "Erstelle ein neues Label, das für Aufgaben in diesem Arbeitsbereich verwendet werden kann.",
+			"createError": "Label konnte nicht erstellt werden",
+			"createLabel": "Label erstellen",
+			"createSuccess": "Label erstellt",
+			"deleteConfirmDescription": "Dadurch wird dieses Label dauerhaft von allen Aufgaben entfernt. Diese Aktion kann nicht rückgängig gemacht werden.",
+			"deleteConfirmTitle": "Dieses Label löschen?",
+			"deleteError": "Label konnte nicht gelöscht werden",
+			"deleteLabel": "Löschen",
+			"deleteSuccess": "Label gelöscht",
+			"editDescription": "Aktualisiere den Namen oder die Farbe dieses Labels.",
+			"editLabel": "Label bearbeiten",
+			"empty": "Noch keine Labels. Erstelle dein erstes Label, um loszulegen.",
+			"nameLabel": "Labelname",
+			"namePlaceholder": "Labelnamen eingeben",
+			"nameRequired": "Labelname ist erforderlich",
+			"pageTitle": "Label-Einstellungen",
+			"saveLabel": "Speichern",
+			"subtitle": "Erstelle, bearbeite und lösche Labels auf Arbeitsbereichsebene.",
+			"title": "Labels",
+			"updateError": "Label konnte nicht aktualisiert werden",
+			"updateSuccess": "Label aktualisiert"
+		},
+		"workspaceRoles": {
+			"allChangesSaved": "Alle Änderungen gespeichert",
+			"createRole": "Rolle erstellen",
+			"defaultBadge": "Standard",
+			"defaultRoleDescriptions": {
+				"admin": "Hat vollen Zugriff auf den Arbeitsbereich.",
+				"member": "Kann Aufgaben und Projekte erstellen und verwalten.",
+				"viewer": "Kann Aufgaben ansehen und kommentieren."
+			},
+			"defaultRoleHelp": "Standardrolle — der Name ist reserviert und die Zeile kann nicht gelöscht werden.",
+			"deleteDialog": {
+				"description": "Dies löscht die Rolle „{{role}}“ dauerhaft. Mitglieder mit dieser Rolle verlieren die zugehörigen Berechtigungen.",
+				"title": "Rolle löschen"
+			},
+			"deleteRole": "Rolle löschen",
+			"discard": "Verwerfen",
+			"emptyDescription": "Standardrollen erscheinen hier, sobald sie für diesen Arbeitsbereich angelegt wurden.",
+			"emptyTitle": "Noch keine Rollen",
+			"loadError": "Rollen konnten nicht geladen werden.",
+			"loading": "Wird geladen…",
+			"nameHint": "Kleinschreibung. Kann später nicht mehr geändert werden.",
+			"nameLabel": "Name",
+			"namePlaceholder": "z. B. Prüfer",
+			"newRole": "Neue Rolle",
+			"noAccess": "Du benötigst Admin- oder Eigentümerrechte, um Arbeitsbereichsrollen zu verwalten.",
+			"pageTitle": "Rollen",
+			"permissionCount_one": "{{count}} Berechtigung",
+			"permissionCount_other": "{{count}} Berechtigungen",
+			"permissions": {
+				"label": {
+					"create": {
+						"description": "Kann Labels erstellen",
+						"label": "Erstellen"
+					},
+					"delete": {
+						"description": "Kann Labels löschen",
+						"label": "Löschen"
+					},
+					"read": {
+						"description": "Kann Labels ansehen",
+						"label": "Lesen"
+					},
+					"update": {
+						"description": "Kann Labels bearbeiten",
+						"label": "Aktualisieren"
+					}
+				},
+				"project": {
+					"create": {
+						"description": "Kann neue Projekte erstellen",
+						"label": "Erstellen"
+					},
+					"delete": {
+						"description": "Kann Projekte löschen",
+						"label": "Löschen"
+					},
+					"read": {
+						"description": "Kann Projekte ansehen",
+						"label": "Lesen"
+					},
+					"share": {
+						"description": "Kann Projekte teilen",
+						"label": "Teilen"
+					},
+					"update": {
+						"description": "Kann Projekteinstellungen bearbeiten",
+						"label": "Aktualisieren"
+					}
+				},
+				"task": {
+					"assign": {
+						"description": "Kann Aufgaben Mitgliedern zuweisen",
+						"label": "Zuweisen"
+					},
+					"create": {
+						"description": "Kann Aufgaben erstellen",
+						"label": "Erstellen"
+					},
+					"delete": {
+						"description": "Kann Aufgaben löschen",
+						"label": "Löschen"
+					},
+					"read": {
+						"description": "Kann Aufgaben ansehen",
+						"label": "Lesen"
+					},
+					"update": {
+						"description": "Kann Aufgaben bearbeiten",
+						"label": "Aktualisieren"
+					}
+				},
+				"workspace": {
+					"delete": {
+						"description": "Kann den Arbeitsbereich löschen",
+						"label": "Löschen"
+					},
+					"manage_settings": {
+						"description": "Kann Arbeitsbereichseinstellungen verwalten",
+						"label": "Einstellungen verwalten"
+					},
+					"read": {
+						"description": "Kann Arbeitsbereichseinstellungen ansehen",
+						"label": "Lesen"
+					},
+					"update": {
+						"description": "Kann Arbeitsbereichseinstellungen aktualisieren",
+						"label": "Aktualisieren"
+					}
+				}
+			},
+			"resources": {
+				"label": "Labels",
+				"project": "Projekte",
+				"task": "Aufgaben",
+				"workspace": "Arbeitsbereich"
+			},
+			"saveChanges": "Änderungen speichern",
+			"sectionSubtitle": "Bearbeite die Standardrollen oder füge eine eigene hinzu. Mitglieder behalten ihren zugewiesenen Rollennamen bei Änderungen.",
+			"sectionTitle": "Arbeitsbereichsrollen",
+			"subtitle": "Lege fest, welche Aktionen Mitglieder in {{workspaceName}} ausführen können.",
+			"thisWorkspace": "diesem Arbeitsbereich",
+			"title": "Rollen",
+			"toast": {
+				"created": "Rolle erstellt",
+				"createError": "Rolle konnte nicht erstellt werden",
+				"deleted": "Rolle gelöscht",
+				"deleteError": "Rolle konnte nicht gelöscht werden",
+				"updated": "Rolle aktualisiert",
+				"updateError": "Rolle konnte nicht aktualisiert werden"
+			},
+			"unsavedChanges": "Du hast ungespeicherte Änderungen",
+			"validation": {
+				"nameExists": "Es gibt bereits eine Rolle mit diesem Namen",
+				"nameRequired": "Rollenname ist erforderlich",
+				"permissionRequired": "Mindestens eine Berechtigung muss ausgewählt werden"
+			}
+		},
+		"workspaceAuditLog": {
+			"columnAction": "Action",
+			"columnDetail": "Detail",
+			"columnProject": "Project",
+			"columnWhen": "When",
+			"columnWho": "Who",
+			"description": "Who did what and when across this workspace.",
+			"emptyDescription": "Changes to projects, columns and tasks will appear here.",
+			"emptyTitle": "No entries yet",
+			"next": "Next",
+			"noAccessDescription": "Only workspace admins can view the audit log.",
+			"noAccessTitle": "Admins only",
+			"pageOf": "Page {{page}} of {{pages}}",
+			"previous": "Previous",
+			"title": "Audit log",
+			"action": {
+				"archived": "archived",
+				"assignee_changed": "assignee changed",
+				"created": "created",
+				"deleted": "deleted",
+				"reordered": "reordered",
+				"status_changed": "status changed",
+				"unarchived": "unarchived",
+				"updated": "updated"
+			},
+			"entity": {
+				"column": "Column",
+				"project": "Project",
+				"task": "Task"
+			}
+		},
+		"projectWorkflowTransitions": {
+			"description": "Restrict which columns tasks can move to from each column.",
+			"hint": "Columns with no targets selected allow moving tasks to any column.",
+			"noColumns": "Create columns first to configure transitions.",
+			"resetToTemplate": "Reset to template",
+			"save": "Save transitions",
+			"title": "Workflow transitions",
+			"toastError": "Failed to save workflow transitions",
+			"toastSaved": "Workflow transitions saved",
+			"unrestricted": "Unrestricted"
 		}
 	},
 	"navigation": {
@@ -1066,7 +1272,8 @@
 			"members": "Mitglieder",
 			"invitations": "Einladungen",
 			"more": "Mehr",
-			"backToBoard": "Zurück zum Board"
+			"backToBoard": "Zurück zum Board",
+			"myTasks": "Meine Aufgaben"
 		},
 		"projectList": {
 			"viewProject": "Projekt ansehen",
@@ -1457,7 +1664,8 @@
 			"selectTask": "Wähle eine Aufgabe zum Verknüpfen aus",
 			"types": {
 				"blocks": "blockiert",
-				"related": "steht in Beziehung zu"
+				"related": "steht in Beziehung zu",
+				"blocked_by": "blockiert von"
 			}
 		},
 		"subtasks": {
@@ -1699,6 +1907,67 @@
 			"searchActions": "Aktionen suchen...",
 			"noActionsFound": "Keine Aktionen gefunden.",
 			"changeStatus": "Status ändern"
+		},
+		"epics": {
+			"addTask": "Add task",
+			"cancel": "Cancel",
+			"collapse": "Collapse epic",
+			"create": "Create",
+			"createError": "Failed to create",
+			"empty": "No epics yet",
+			"emptySubtitle": "Create an epic to group related tasks and track their progress.",
+			"epicTitlePlaceholder": "Epic title",
+			"expand": "Expand epic",
+			"newEpic": "New epic",
+			"pageTitle": "{{name}} — Epics",
+			"progress": "{{done}}/{{total}}",
+			"taskTitlePlaceholder": "Task title",
+			"title": "Epics",
+			"loadError": "Failed to load epics.",
+			"progressDone": "{{done}}/{{total}} done"
+		},
+		"sprints": {
+			"addTask": "Add to sprint",
+			"addTasks": "Add tasks",
+			"assignError": "Failed to update sprint tasks",
+			"cancel": "Cancel",
+			"collapse": "Collapse sprint",
+			"complete": "Complete",
+			"completeSuccess": "Sprint completed. {{count}} unfinished task(s) released back to the backlog.",
+			"create": "Create",
+			"createError": "Failed to create sprint",
+			"delete": "Delete",
+			"deleteConfirmDescription": "Tasks in this sprint will be released back to the backlog. This action cannot be undone.",
+			"deleteConfirmTitle": "Delete this sprint?",
+			"deleteError": "Failed to delete sprint",
+			"deleteSuccess": "Sprint deleted",
+			"edit": "Edit sprint",
+			"empty": "No sprints yet",
+			"emptySubtitle": "Create a sprint to plan a focused batch of work from your backlog.",
+			"endDate": "End date",
+			"expand": "Expand sprint",
+			"goalPlaceholder": "Goal (optional)",
+			"namePlaceholder": "Sprint name",
+			"newSprint": "New sprint",
+			"noTasks": "No tasks in this sprint yet.",
+			"noUnassignedTasks": "All project tasks are already in a sprint.",
+			"pageTitle": "{{name}} — Sprints",
+			"removeTask": "Remove from sprint",
+			"save": "Save",
+			"start": "Start",
+			"startDate": "Start date",
+			"status": {
+				"active": "Active",
+				"completed": "Completed",
+				"planned": "Planned"
+			},
+			"title": "Sprints",
+			"unassignedTasks": "Tasks not in a sprint",
+			"updateError": "Failed to update sprint",
+			"actions": "Sprint actions",
+			"filterTasksPlaceholder": "Filter tasks...",
+			"loadError": "Failed to load sprints.",
+			"noMatchingTasks": "No tasks match your search."
 		}
 	},
 	"invitations": {
@@ -1747,7 +2016,8 @@
 				"complete": "Abgeschlossen",
 				"inProgress": "In Bearbeitung"
 			},
-			"noDueDate": "Kein Fälligkeitsdatum"
+			"noDueDate": "Kein Fälligkeitsdatum",
+			"emptyDescriptionReadOnly": "Es gibt noch keine Projekte in diesem Arbeitsbereich. Bitte einen Admin, eines zu erstellen."
 		},
 		"search": {
 			"pageTitle": "Suche",
@@ -1781,17 +2051,24 @@
 			"submit": "Workspace erstellen",
 			"success": "Workspace erfolgreich erstellt",
 			"error": "Workspace konnte nicht erstellt werden"
+		},
+		"myTasks": {
+			"pageTitle": "Meine Aufgaben",
+			"emptyTitle": "Dir sind keine Aufgaben zugewiesen",
+			"emptyDescription": "Aufgaben, die dir in jedem Projekt dieses Arbeitsbereichs zugewiesen sind, werden hier angezeigt."
 		}
 	},
 	"team": {
 		"roles": {
 			"owner": "Eigentümer",
 			"admin": "Admin",
-			"member": "Mitglied"
+			"member": "Mitglied",
+			"viewer": "Betrachter"
 		},
 		"members": {
 			"pageTitle": "Mitglieder",
-			"inviteMember": "Mitglied einladen"
+			"inviteMember": "Mitglied einladen",
+			"you": "Du"
 		},
 		"inviteModal": {
 			"title": "Teammitglied einladen",
@@ -1799,7 +2076,8 @@
 			"emailPlaceholder": "kollege@firma.com",
 			"sendInvitation": "Einladung senden",
 			"success": "Einladung erfolgreich gesendet",
-			"error": "Teammitglied konnte nicht eingeladen werden"
+			"error": "Teammitglied konnte nicht eingeladen werden",
+			"roleLabel": "Rolle"
 		},
 		"membersTable": {
 			"emptyTitle": "Noch keine Teammitglieder",
@@ -1822,7 +2100,13 @@
 			"removeSuccess": "Teammitglied erfolgreich entfernt",
 			"removeError": "Teammitglied konnte nicht entfernt werden",
 			"cancelInviteSuccess": "Einladung erfolgreich abgebrochen",
-			"cancelInviteError": "Einladung konnte nicht abgebrochen werden"
+			"cancelInviteError": "Einladung konnte nicht abgebrochen werden",
+			"roleUpdateError": "Rolle konnte nicht aktualisiert werden",
+			"roleUpdateSuccess": "Rolle aktualisiert"
+		},
+		"invitations": {
+			"expires": "Läuft ab am {{date}}",
+			"pendingBadge": "ausstehend"
 		}
 	},
 	"publicProject": {

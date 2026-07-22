@@ -15,6 +15,7 @@ import { Dialog, DialogClose, DialogPopup } from "@/components/ui/dialog";
 import { dueDateStatusColors, getDueDateStatus } from "@/lib/due-date-status";
 import { formatDateMedium, formatDateShort } from "@/lib/format";
 import { getInitials } from "@/lib/get-initials";
+import { getStatusLabel } from "@/lib/i18n/domain";
 import { getPriorityIcon } from "@/lib/priority";
 import type { ExternalLink } from "@/types/external-link";
 import type Task from "@/types/task";
@@ -79,7 +80,7 @@ export function PublicTaskDetailModal({
     (link) => link.resourceType === "branch",
   );
 
-  const statusLabel = task.status ? t(`tasks:status.${task.status}`) : "";
+  const statusLabel = task.status ? getStatusLabel(task.status) : "";
   const priorityLabel =
     task.priority != null && task.priority !== ""
       ? t(`tasks:priority.${task.priority}`)

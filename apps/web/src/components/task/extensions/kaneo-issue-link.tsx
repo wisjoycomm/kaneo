@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/preview-card";
 import getProject from "@/fetchers/project/get-project";
 import getTask from "@/fetchers/task/get-task";
+import { getStatusLabel } from "@/lib/i18n/domain";
 
 function parseTaskRouteFromUrl(url: string) {
   try {
@@ -63,9 +64,7 @@ function KaneoIssueLinkView({ node }: NodeViewProps) {
     issueKey ||
     (projectSlug && task?.number ? `${projectSlug}-${task.number}` : "");
   const title = task?.title || issueKey || t("tasks:entity.task");
-  const status = task?.status
-    ? t(`tasks:status.${task.status}`)
-    : t("tasks:status.to-do");
+  const status = getStatusLabel(task?.status ?? "to-do");
   const priority = task?.priority
     ? t(`tasks:priority.${task.priority}`)
     : t("tasks:priority.no-priority");

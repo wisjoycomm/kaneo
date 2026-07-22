@@ -152,7 +152,9 @@
 			"githubError": "GitHub 로그인에 실패했습니다",
 			"discordError": "Discord 로그인에 실패했습니다",
 			"errors": {
-				"account_not_linked": "This identity could not be linked to the existing account. Sign in by email to verify the account, then try SSO again. If email sign-in is unavailable, contact your administrator."
+				"account_not_linked": "This identity could not be linked to the existing account. Sign in by email to verify the account, then try SSO again. If email sign-in is unavailable, contact your administrator.",
+				"oauth_code_verification_failed": "OAuth 인증에 실패했습니다. 다시 시도해 주세요.",
+				"registration_is_currently_disabled_you_need_a_valid_invitation_to_create_an_account_": "현재 가입이 비활성화되어 있습니다. 계정을 만들려면 유효한 초대가 필요합니다."
 			}
 		},
 		"providers": {
@@ -412,7 +414,21 @@
 			"toastPreferencesSaved": "알림 환경설정이 저장되었습니다",
 			"toastPreferencesSaveFailed": "알림 환경설정 저장에 실패했습니다",
 			"toastRuleSavedGeneric": "워크스페이스 알림 규칙이 저장되었습니다",
-			"toastRuleRemovedGeneric": "워크스페이스 알림 규칙이 제거되었습니다"
+			"toastRuleRemovedGeneric": "워크스페이스 알림 규칙이 제거되었습니다",
+			"eventComments": "댓글 및 멘션",
+			"eventCommentsHint": "회원님에게 할당된 작업에 대한 새 댓글과 직접 @멘션을 포함합니다.",
+			"eventDueDateReminders": "마감일 알림",
+			"eventPreferencesDescription": "어떤 작업 이벤트가 앱 내 알림을 생성하고 연결된 채널로 전달될지 선택하세요.",
+			"eventPreferencesTitle": "알림 받을 항목",
+			"eventStatusChanges": "작업 상태 변경",
+			"eventTaskAssignments": "작업 할당",
+			"reminderLeadTimeHint": "1시간에서 30일 전 사이. 기한 초과 알림은 별도로 발송됩니다.",
+			"reminderLeadTimeInvalid": "1과 {{max}} 사이의 정수를 입력하세요.",
+			"reminderLeadTimeLabel": "마감일 전에 알림",
+			"reminderLeadTimeUnitDays": "일",
+			"reminderLeadTimeUnitHours": "시간",
+			"saveEventPreferences": "알림 유형 저장",
+			"workspaceEnabledLabel": "{{workspaceName}}에 대한 알림 활성화"
 		},
 		"preferencesPage": {
 			"title": "환경설정",
@@ -904,11 +920,13 @@
 				"taskMoved": "작업 이동",
 				"taskDueDateChanged": "마감일 변경",
 				"taskAssigneeChanged": "담당자 변경",
-				"taskUnassigned": "할당 해제"
+				"taskUnassigned": "할당 해제",
+				"dueDateReminder": "마감일 알림"
 			},
 			"connect": "웹훅 연결",
 			"saveChanges": "변경사항 저장",
-			"disconnect": "연결 해제"
+			"disconnect": "연결 해제",
+			"reminderLeadTimeLabel": "이 시간(시간 단위) 전에 웹훅 전송"
 		},
 		"telegramIntegration": {
 			"validation": {
@@ -1019,6 +1037,210 @@
 			"merged": "병합됨",
 			"draft": "초안",
 			"open": "열림"
+		},
+		"workspaceLabels": {
+			"cardDescription": "작업에 할당할 수 있는 라벨을 관리합니다.",
+			"colorLabel": "색상",
+			"createDescription": "이 작업 공간의 작업에서 사용할 새 라벨을 만듭니다.",
+			"createError": "라벨 생성 실패",
+			"createLabel": "라벨 만들기",
+			"createSuccess": "라벨이 생성되었습니다",
+			"deleteConfirmDescription": "이 작업은 모든 작업에서 이 라벨을 영구적으로 제거합니다. 이 작업은 취소할 수 없습니다.",
+			"deleteConfirmTitle": "이 라벨을 삭제하시겠습니까?",
+			"deleteError": "라벨 삭제 실패",
+			"deleteLabel": "삭제",
+			"deleteSuccess": "라벨이 삭제되었습니다",
+			"editDescription": "이 라벨의 이름 또는 색상을 업데이트합니다.",
+			"editLabel": "라벨 편집",
+			"empty": "아직 라벨이 없습니다. 첫 번째 라벨을 만들어 시작하세요.",
+			"nameLabel": "라벨 이름",
+			"namePlaceholder": "라벨 이름 입력",
+			"nameRequired": "라벨 이름은 필수입니다",
+			"pageTitle": "라벨 설정",
+			"saveLabel": "저장",
+			"subtitle": "작업 공간 수준의 라벨을 생성, 편집 및 삭제합니다.",
+			"title": "라벨",
+			"updateError": "라벨 업데이트 실패",
+			"updateSuccess": "라벨이 업데이트되었습니다"
+		},
+		"workspaceRoles": {
+			"allChangesSaved": "모든 변경 사항이 저장되었습니다",
+			"createRole": "역할 만들기",
+			"defaultBadge": "기본값",
+			"defaultRoleDescriptions": {
+				"admin": "작업 공간에 대한 전체 액세스 권한이 있습니다.",
+				"member": "작업과 프로젝트를 생성하고 관리할 수 있습니다.",
+				"viewer": "작업을 보고 댓글을 달 수 있습니다."
+			},
+			"defaultRoleHelp": "기본 역할 — 이름이 예약되어 있으며 행을 삭제할 수 없습니다.",
+			"deleteDialog": {
+				"description": "\"{{role}}\" 역할이 영구적으로 삭제됩니다. 이 역할이 할당된 멤버는 해당 권한을 잃게 됩니다.",
+				"title": "역할 삭제"
+			},
+			"deleteRole": "역할 삭제",
+			"discard": "취소",
+			"emptyDescription": "이 작업 공간에 대해 생성되면 기본 역할이 여기에 표시됩니다.",
+			"emptyTitle": "아직 역할이 없습니다",
+			"loadError": "역할을 불러오지 못했습니다.",
+			"loading": "불러오는 중…",
+			"nameLabel": "이름",
+			"nameHint": "소문자만 사용합니다. 나중에 변경할 수 없습니다.",
+			"namePlaceholder": "예: 검토자",
+			"newRole": "새 역할",
+			"noAccess": "작업 공간 역할을 관리하려면 관리자 또는 소유자 권한이 필요합니다.",
+			"pageTitle": "역할",
+			"permissionCount_one": "권한 {{count}}개",
+			"permissionCount_other": "권한 {{count}}개",
+			"permissions": {
+				"label": {
+					"create": {
+						"description": "라벨을 생성할 수 있습니다",
+						"label": "생성"
+					},
+					"delete": {
+						"description": "라벨을 삭제할 수 있습니다",
+						"label": "삭제"
+					},
+					"read": {
+						"description": "라벨을 볼 수 있습니다",
+						"label": "읽기"
+					},
+					"update": {
+						"description": "라벨을 편집할 수 있습니다",
+						"label": "업데이트"
+					}
+				},
+				"project": {
+					"create": {
+						"description": "새 프로젝트를 생성할 수 있습니다",
+						"label": "생성"
+					},
+					"delete": {
+						"description": "프로젝트를 삭제할 수 있습니다",
+						"label": "삭제"
+					},
+					"read": {
+						"description": "프로젝트를 볼 수 있습니다",
+						"label": "읽기"
+					},
+					"share": {
+						"description": "프로젝트를 공유할 수 있습니다",
+						"label": "공유"
+					},
+					"update": {
+						"description": "프로젝트 설정을 편집할 수 있습니다",
+						"label": "업데이트"
+					}
+				},
+				"task": {
+					"assign": {
+						"description": "멤버에게 작업을 할당할 수 있습니다",
+						"label": "할당"
+					},
+					"create": {
+						"description": "작업을 생성할 수 있습니다",
+						"label": "생성"
+					},
+					"delete": {
+						"description": "작업을 삭제할 수 있습니다",
+						"label": "삭제"
+					},
+					"read": {
+						"description": "작업을 볼 수 있습니다",
+						"label": "읽기"
+					},
+					"update": {
+						"description": "작업을 편집할 수 있습니다",
+						"label": "업데이트"
+					}
+				},
+				"workspace": {
+					"delete": {
+						"description": "작업 공간을 삭제할 수 있습니다",
+						"label": "삭제"
+					},
+					"manage_settings": {
+						"description": "작업 공간 설정을 관리할 수 있습니다",
+						"label": "설정 관리"
+					},
+					"read": {
+						"description": "작업 공간 설정을 볼 수 있습니다",
+						"label": "읽기"
+					},
+					"update": {
+						"description": "작업 공간 설정을 업데이트할 수 있습니다",
+						"label": "업데이트"
+					}
+				}
+			},
+			"resources": {
+				"label": "라벨",
+				"project": "프로젝트",
+				"task": "작업",
+				"workspace": "작업 공간"
+			},
+			"saveChanges": "변경 사항 저장",
+			"sectionSubtitle": "기본 역할을 편집하거나 맞춤 역할을 추가하세요. 멤버는 편집 후에도 할당된 역할 이름을 유지합니다.",
+			"sectionTitle": "작업 공간 역할",
+			"subtitle": "{{workspaceName}}에서 멤버가 수행할 수 있는 작업을 정의합니다.",
+			"thisWorkspace": "이 작업 공간",
+			"title": "역할",
+			"toast": {
+				"created": "역할이 생성되었습니다",
+				"createError": "역할 생성 실패",
+				"deleted": "역할이 삭제되었습니다",
+				"deleteError": "역할 삭제 실패",
+				"updated": "역할이 업데이트되었습니다",
+				"updateError": "역할 업데이트 실패"
+			},
+			"unsavedChanges": "저장되지 않은 변경 사항이 있습니다",
+			"validation": {
+				"nameExists": "이 이름의 역할이 이미 존재합니다",
+				"nameRequired": "역할 이름은 필수입니다",
+				"permissionRequired": "하나 이상의 권한을 선택해야 합니다"
+			}
+		},
+		"workspaceAuditLog": {
+			"columnAction": "Action",
+			"columnDetail": "Detail",
+			"columnProject": "Project",
+			"columnWhen": "When",
+			"columnWho": "Who",
+			"description": "Who did what and when across this workspace.",
+			"emptyDescription": "Changes to projects, columns and tasks will appear here.",
+			"emptyTitle": "No entries yet",
+			"next": "Next",
+			"noAccessDescription": "Only workspace admins can view the audit log.",
+			"noAccessTitle": "Admins only",
+			"pageOf": "Page {{page}} of {{pages}}",
+			"previous": "Previous",
+			"title": "Audit log",
+			"action": {
+				"archived": "archived",
+				"assignee_changed": "assignee changed",
+				"created": "created",
+				"deleted": "deleted",
+				"reordered": "reordered",
+				"status_changed": "status changed",
+				"unarchived": "unarchived",
+				"updated": "updated"
+			},
+			"entity": {
+				"column": "Column",
+				"project": "Project",
+				"task": "Task"
+			}
+		},
+		"projectWorkflowTransitions": {
+			"description": "Restrict which columns tasks can move to from each column.",
+			"hint": "Columns with no targets selected allow moving tasks to any column.",
+			"noColumns": "Create columns first to configure transitions.",
+			"resetToTemplate": "Reset to template",
+			"save": "Save transitions",
+			"title": "Workflow transitions",
+			"toastError": "Failed to save workflow transitions",
+			"toastSaved": "Workflow transitions saved",
+			"unrestricted": "Unrestricted"
 		}
 	},
 	"navigation": {
@@ -1050,7 +1272,8 @@
 			"members": "멤버",
 			"invitations": "초대",
 			"more": "더 보기",
-			"backToBoard": "보드로 돌아가기"
+			"backToBoard": "보드로 돌아가기",
+			"myTasks": "내 작업"
 		},
 		"projectList": {
 			"viewProject": "프로젝트 보기",
@@ -1166,7 +1389,31 @@
 				"title": "시간 추적 시작됨",
 				"contentWithTask": "다음 작업의 시간 추적이 시작되었습니다: {{taskTitle}}",
 				"contentWithoutTask": "작업의 시간 추적이 시작되었습니다"
+			},
+			"due_date_reminder": {
+				"content": "{{taskTitle}}의 마감이 {{leadTime}} 남았습니다",
+				"title": "곧 마감되는 작업"
+			},
+			"task_comment": {
+				"content": "{{taskTitle}}에 새 댓글: {{commentPreview}}",
+				"title": "{{commenterName}}님이 회원님의 작업에 댓글을 남겼습니다"
+			},
+			"task_mention": {
+				"content": "{{mentionerName}}님이 {{taskTitle}}에서 회원님을 멘션했습니다",
+				"title": "{{mentionerName}}님이 회원님을 멘션했습니다"
+			},
+			"task_overdue": {
+				"content": "{{taskTitle}}의 마감일이 지났습니다",
+				"title": "작업 기한 초과"
 			}
+		},
+		"reminderLeadTime": {
+			"days_one": "{{count}}일",
+			"days_other": "{{count}}일",
+			"hours_one": "{{count}}시간",
+			"hours_other": "{{count}}시간",
+			"minutes_one": "{{count}}분",
+			"minutes_other": "{{count}}분"
 		}
 	},
 	"activity": {
@@ -1417,7 +1664,8 @@
 			"selectTask": "연결할 작업 선택",
 			"types": {
 				"blocks": "차단함",
-				"related": "관련됨"
+				"related": "관련됨",
+				"blocked_by": "차단됨"
 			}
 		},
 		"subtasks": {
@@ -1659,6 +1907,67 @@
 			"searchActions": "작업 검색...",
 			"noActionsFound": "작업을 찾을 수 없습니다.",
 			"changeStatus": "상태 변경"
+		},
+		"epics": {
+			"addTask": "Add task",
+			"cancel": "Cancel",
+			"collapse": "Collapse epic",
+			"create": "Create",
+			"createError": "Failed to create",
+			"empty": "No epics yet",
+			"emptySubtitle": "Create an epic to group related tasks and track their progress.",
+			"epicTitlePlaceholder": "Epic title",
+			"expand": "Expand epic",
+			"newEpic": "New epic",
+			"pageTitle": "{{name}} — Epics",
+			"progress": "{{done}}/{{total}}",
+			"taskTitlePlaceholder": "Task title",
+			"title": "Epics",
+			"loadError": "Failed to load epics.",
+			"progressDone": "{{done}}/{{total}} done"
+		},
+		"sprints": {
+			"addTask": "Add to sprint",
+			"addTasks": "Add tasks",
+			"assignError": "Failed to update sprint tasks",
+			"cancel": "Cancel",
+			"collapse": "Collapse sprint",
+			"complete": "Complete",
+			"completeSuccess": "Sprint completed. {{count}} unfinished task(s) released back to the backlog.",
+			"create": "Create",
+			"createError": "Failed to create sprint",
+			"delete": "Delete",
+			"deleteConfirmDescription": "Tasks in this sprint will be released back to the backlog. This action cannot be undone.",
+			"deleteConfirmTitle": "Delete this sprint?",
+			"deleteError": "Failed to delete sprint",
+			"deleteSuccess": "Sprint deleted",
+			"edit": "Edit sprint",
+			"empty": "No sprints yet",
+			"emptySubtitle": "Create a sprint to plan a focused batch of work from your backlog.",
+			"endDate": "End date",
+			"expand": "Expand sprint",
+			"goalPlaceholder": "Goal (optional)",
+			"namePlaceholder": "Sprint name",
+			"newSprint": "New sprint",
+			"noTasks": "No tasks in this sprint yet.",
+			"noUnassignedTasks": "All project tasks are already in a sprint.",
+			"pageTitle": "{{name}} — Sprints",
+			"removeTask": "Remove from sprint",
+			"save": "Save",
+			"start": "Start",
+			"startDate": "Start date",
+			"status": {
+				"active": "Active",
+				"completed": "Completed",
+				"planned": "Planned"
+			},
+			"title": "Sprints",
+			"unassignedTasks": "Tasks not in a sprint",
+			"updateError": "Failed to update sprint",
+			"actions": "Sprint actions",
+			"filterTasksPlaceholder": "Filter tasks...",
+			"loadError": "Failed to load sprints.",
+			"noMatchingTasks": "No tasks match your search."
 		}
 	},
 	"invitations": {
@@ -1707,7 +2016,8 @@
 				"complete": "완료",
 				"inProgress": "진행 중"
 			},
-			"noDueDate": "마감일 없음"
+			"noDueDate": "마감일 없음",
+			"emptyDescriptionReadOnly": "이 작업 공간에는 아직 프로젝트가 없습니다. 관리자에게 하나 만들어 달라고 요청하세요."
 		},
 		"search": {
 			"pageTitle": "검색",
@@ -1741,17 +2051,24 @@
 			"submit": "워크스페이스 만들기",
 			"success": "워크스페이스가 생성되었습니다",
 			"error": "워크스페이스 생성에 실패했습니다"
+		},
+		"myTasks": {
+			"pageTitle": "내 작업",
+			"emptyTitle": "배정된 작업이 없습니다",
+			"emptyDescription": "이 워크스페이스의 모든 프로젝트에서 나에게 배정된 작업이 여기에 표시됩니다."
 		}
 	},
 	"team": {
 		"roles": {
 			"owner": "소유자",
 			"admin": "관리자",
-			"member": "멤버"
+			"member": "멤버",
+			"viewer": "뷰어"
 		},
 		"members": {
 			"pageTitle": "멤버",
-			"inviteMember": "멤버 초대"
+			"inviteMember": "멤버 초대",
+			"you": "나"
 		},
 		"inviteModal": {
 			"title": "팀 멤버 초대",
@@ -1759,7 +2076,8 @@
 			"emailPlaceholder": "colleague@company.com",
 			"sendInvitation": "초대 전송",
 			"success": "초대가 전송되었습니다",
-			"error": "팀 멤버 초대에 실패했습니다"
+			"error": "팀 멤버 초대에 실패했습니다",
+			"roleLabel": "역할"
 		},
 		"membersTable": {
 			"emptyTitle": "아직 팀 멤버가 없습니다",
@@ -1782,7 +2100,13 @@
 			"removeSuccess": "팀 멤버가 제거되었습니다",
 			"removeError": "팀 멤버 제거에 실패했습니다",
 			"cancelInviteSuccess": "초대가 취소되었습니다",
-			"cancelInviteError": "초대 취소에 실패했습니다"
+			"cancelInviteError": "초대 취소에 실패했습니다",
+			"roleUpdateError": "역할 업데이트 실패",
+			"roleUpdateSuccess": "역할이 업데이트되었습니다"
+		},
+		"invitations": {
+			"expires": "{{date}}에 만료됩니다",
+			"pendingBadge": "대기 중"
 		}
 	},
 	"publicProject": {

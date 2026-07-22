@@ -56,5 +56,23 @@
 			"quoteStyle": "double",
 			"indentStyle": "space"
 		}
-	}
+	},
+	"overrides": [
+		{
+			"includes": ["tests/**"],
+			"linter": {
+				"rules": {
+					"suspicious": { "noUndeclaredEnvVars": "off" }
+				}
+			}
+		},
+		{
+			"includes": ["apps/site/**"],
+			"linter": {
+				"rules": {
+					"performance": { "noImgElement": "off" }
+				}
+			}
+		}
+	]
 }

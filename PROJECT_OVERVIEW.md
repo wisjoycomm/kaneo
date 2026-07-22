@@ -4,11 +4,15 @@
 
 ### Core PM
 - Workspace / team / role — multi-tenant orgs, RBAC
-- Project → Column → Task kanban hierarchy
+- Project → Column → Task kanban hierarchy (default columns: Backlog, To Do, In Progress, In Review, Done, Pending, Cancel)
+- Views: board, backlog, list, Gantt, epics, sprints
+- Epics — task hierarchy (task.type + parentTaskId), tree view with rollup progress
+- Sprints — planned → active → completed lifecycle, task assignment, unfinished-task release on complete
 - Task relations, external links, labels, comments
 - Time entries — per-task time tracking
 - Workflow rules — automation on task/column events
-- Activity log — audit trail per task/project
+- Activity log — per-task history
+- Audit log — workspace-scoped admin audit trail (who/what/when, survives deletions)
 - Search — cross-entity search
 
 ### Auth / Access
@@ -23,7 +27,7 @@
 - WebSocket live push — Redis pub/sub for multi-instance, in-memory fallback for single-instance
 
 ### Integrations (plugin system, one folder each)
-GitHub, Gitea, Slack, Discord, Telegram, Generic Webhook
+GitHub, GitLab, Gitea, Slack, Discord, Telegram, Generic Webhook
 
 ### Other
 - MCP server — expose Kaneo as AI-agent tools
